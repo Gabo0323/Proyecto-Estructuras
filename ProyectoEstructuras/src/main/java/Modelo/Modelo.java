@@ -47,14 +47,14 @@ public class Modelo {
 //                }
 //            }
 //        });
-        iniciarJuego();
+//        iniciarJuego();
     }
 
-     public void iniciarJuego() {
-        secuencia.clear();
-        reproducirSonido("start");
-        agregarPasoASecuencia();
-    }
+//     public void iniciarJuego() {
+//        secuencia.clear();
+//        reproducirSonido("start");
+//        //agregarPasoASecuencia();
+//    }
     
      public void reproducirSonido(String nombreArchivo) {
 //        try {
@@ -72,70 +72,70 @@ public class Modelo {
 //        }
     }
      
-     public void agregarPasoASecuencia() {
-        Random rand = new Random();
-        secuencia.add(rand.nextInt(4));
-        pasoActual = 0;
-        nivel++;
-        //etiquetaNivel.setText("Nivel " + nivel);
-        puntuacion += 10 * multiplicadorPuntos;
-        //etiquetaPuntuacion.setText("Puntuación: " + puntuacion);
-        if (nivel % 4 == 0) {
-            if (tiempoRestante > 3) {
-                tiempoRestante -= 2;
-                //panelSimon.mostrarMensaje("TIEMPO REDUCIDO!!");
-            }
-            if (velocidadSecuencia > 500) {
-                velocidadSecuencia -= 100;
-                //panelSimon.mostrarMensaje("MÁS RÁPIDO!!!");
-                reproducirSonido("moreSpeed");
-                multiplicadorPuntos *= 10;
-            }
-        }
-        jugarSecuencia();
-    }
+//     public void agregarPasoASecuencia() {
+//        Random rand = new Random();
+//        secuencia.add(rand.nextInt(4));
+//        pasoActual = 0;
+//        nivel++;
+//        //etiquetaNivel.setText("Nivel " + nivel);
+//        puntuacion += 10 * multiplicadorPuntos;
+//        //etiquetaPuntuacion.setText("Puntuación: " + puntuacion);
+//        if (nivel % 4 == 0) {
+//            if (tiempoRestante > 3) {
+//                tiempoRestante -= 2;
+//                //panelSimon.mostrarMensaje("TIEMPO REDUCIDO!!");
+//            }
+//            if (velocidadSecuencia > 500) {
+//                velocidadSecuencia -= 100;
+//                //panelSimon.mostrarMensaje("MÁS RÁPIDO!!!");
+//                reproducirSonido("moreSpeed");
+//                multiplicadorPuntos *= 10;
+//            }
+//        }
+//        jugarSecuencia();
+//    }
      
-     public void jugarSecuencia() {
-        jugandoSecuencia = true;
-        //etiquetaEstado.setText("Mira la secuencia");
-        for (int i = 0; i < secuencia.size(); i++) {
-            int indiceFinal = i;
-//            Timer temporizador = new Timer(velocidadSecuencia * (i + 1), new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    arcos.get(secuencia.get(indiceFinal)).iluminar();
-//                    reproducirSonido(secuencia.get(indiceFinal) + 1);
-//                    panelSimon.repaint();
-//                    Timer temporizadorRetornoColor = new Timer(velocidadSecuencia / 2, new ActionListener() {
-//                        @Override
-//                        public void actionPerformed(ActionEvent e) {
-//                            arcos.get(secuencia.get(indiceFinal)).detenerIluminacion();
-//                            panelSimon.repaint();
-//                            if (indiceFinal == secuencia.size() - 1) {
-//                                etiquetaEstado.setText("Es tu turno");
-//                                jugandoSecuencia = false;
-//                                reiniciarCronometro();
-//                            }
-//                        }
-//                    });
-//                    temporizadorRetornoColor.setRepeats(false);
-//                    temporizadorRetornoColor.start();
-//                }
-//            });
-            //temporizador.setRepeats(false);
-            //temporizador.start();
-        }
-    }
+//     public void jugarSecuencia() {
+//        jugandoSecuencia = true;
+//        //etiquetaEstado.setText("Mira la secuencia");
+//        for (int i = 0; i < secuencia.size(); i++) {
+//            int indiceFinal = i;
+////            Timer temporizador = new Timer(velocidadSecuencia * (i + 1), new ActionListener() {
+////                @Override
+////                public void actionPerformed(ActionEvent e) {
+////                    arcos.get(secuencia.get(indiceFinal)).iluminar();
+////                    reproducirSonido(secuencia.get(indiceFinal) + 1);
+////                    panelSimon.repaint();
+////                    Timer temporizadorRetornoColor = new Timer(velocidadSecuencia / 2, new ActionListener() {
+////                        @Override
+////                        public void actionPerformed(ActionEvent e) {
+////                            arcos.get(secuencia.get(indiceFinal)).detenerIluminacion();
+////                            panelSimon.repaint();
+////                            if (indiceFinal == secuencia.size() - 1) {
+////                                etiquetaEstado.setText("Es tu turno");
+////                                jugandoSecuencia = false;
+////                                reiniciarCronometro();
+////                            }
+////                        }
+////                    });
+////                    temporizadorRetornoColor.setRepeats(false);
+////                    temporizadorRetornoColor.start();
+////                }
+////            });
+//            //temporizador.setRepeats(false);
+//            //temporizador.start();
+//        }
+//    }
      
-     public void reiniciarCronometro() {
-        tiempoRestante = 15 - (nivel / 4 * 2);
-        if (tiempoRestante < 3) {
-            tiempoRestante = 3;
-        }
-//        temporizadorTurno.stop();
-//        //etiquetaTiempo.setText("Tiempo restante: 00:" + (tiempoRestante < 10 ? "0" : "") + tiempoRestante);
-//        temporizadorTurno.start();
-    }
+//     public void reiniciarCronometro() {
+//        tiempoRestante = 15 - (nivel / 4 * 2);
+//        if (tiempoRestante < 3) {
+//            tiempoRestante = 3;
+//        }
+////        temporizadorTurno.stop();
+////        //etiquetaTiempo.setText("Tiempo restante: 00:" + (tiempoRestante < 10 ? "0" : "") + tiempoRestante);
+////        temporizadorTurno.start();
+//    }
      
      
      

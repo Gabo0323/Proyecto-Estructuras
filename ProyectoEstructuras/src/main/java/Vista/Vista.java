@@ -13,6 +13,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -34,7 +39,6 @@ public class Vista {
     private JLabel etiquetaPuntuacion;
     private JPanel panelSuperior;
     private ArrayList<ArcoColor> arcos;
-    private ArrayList<Integer> secuencia;
 
     public Vista() {
         ventana = new JFrame("Juego Simon");
@@ -76,7 +80,7 @@ public class Vista {
     
     
     
-    class PanelSimon extends JPanel {
+    public class PanelSimon extends JPanel {
 
         private ArcoColor arcoHovered = null;
         private ArcoColor arcoPressed = null;
@@ -84,72 +88,72 @@ public class Vista {
         private Timer temporizadorMensaje;
 
         public PanelSimon() {
-//            temporizadorMensaje = new Timer(2000, new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-////                    mensaje = null;
-////                    repaint();
-////                    temporizadorMensaje.stop();
-//                }
-//            });
+            temporizadorMensaje = new Timer(2000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    mensaje = null;
+                    repaint();
+                    temporizadorMensaje.stop();
+                }
+            });
 
-//            addMouseListener(new MouseAdapter() {
-////                @Override
-////                public void mouseClicked(MouseEvent e) {
-////                    if (!jugandoSecuencia) {
-////                        for (ArcoColor arco : arcos) {
-////                            if (arco.contiene(e.getX(), e.getY())) {
-////                                verificarSecuencia(arco);
-////                                repaint();
-////                                break;
-////                            }
-////                        }
-////                    }
-////                }
-////
-////                @Override
-////                public void mousePressed(MouseEvent e) {
-////                    if (!jugandoSecuencia) {
-////                        for (ArcoColor arco : arcos) {
-////                            if (arco.contiene(e.getX(), e.getY())) {
-////                                arcoPressed = arco;
-////                                repaint();
-////                                break;
-////                            }
-////                        }
-////                    }
-////                }
-////
-////                @Override
-////                public void mouseReleased(MouseEvent e) {
-////                    if (arcoPressed != null) {
-////                        arcoPressed = null;
-////                        arcoHovered = null;
-////                        repaint();
-////                    }
-////                }
-//            });
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+//                    if (!jugandoSecuencia) {
+//                        for (ArcoColor arco : arcos) {
+//                            if (arco.contiene(e.getX(), e.getY())) {
+//                                verificarSecuencia(arco);
+//                                repaint();
+//                                break;
+//                            }
+//                        }
+//                    }
+                }
 
-//            addMouseMotionListener(new MouseMotionAdapter() {
-////                @Override
-////                public void mouseMoved(MouseEvent e) {
-////                    if (!jugandoSecuencia) {
-////                        arcoHovered = null;
-////                        for (ArcoColor arco : arcos) {
-////                            if (arco.contiene(e.getX(), e.getY())) {
-////                                arcoHovered = arco;
-////                                break;
-////                            }
-////                        }
-////                        repaint();
-////                    }
-////                }
-//            });
+                @Override
+                public void mousePressed(MouseEvent e) {
+//                    if (!jugandoSecuencia) {
+//                        for (ArcoColor arco : arcos) {
+//                            if (arco.contiene(e.getX(), e.getY())) {
+//                                arcoPressed = arco;
+//                                repaint();
+//                                break;
+//                            }
+//                        }
+//                    }
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    if (arcoPressed != null) {
+                        arcoPressed = null;
+                        arcoHovered = null;
+                        repaint();
+                    }
+                }
+            });
+
+            addMouseMotionListener(new MouseMotionAdapter() {
+                @Override
+                public void mouseMoved(MouseEvent e) {
+//                    if (!jugandoSecuencia) {
+//                        arcoHovered = null;
+//                        for (ArcoColor arco : arcos) {
+//                            if (arco.contiene(e.getX(), e.getY())) {
+//                                arcoHovered = arco;
+//                                break;
+//                            }
+//                        }
+//                        repaint();
+//                    }
+                }
+            });
         }
 
         public void mostrarMensaje(String msg) {
             this.mensaje = msg;
-            //temporizadorMensaje.start();
+            temporizadorMensaje.start();
             repaint();
         }
 
@@ -201,7 +205,7 @@ public class Vista {
             }
         }
     }
-    class ArcoColor {
+    public class ArcoColor {
 
         private Color color;
         private int anguloInicio;
@@ -240,4 +244,70 @@ public class Vista {
             return getForma(ventana.getWidth() / 2, ventana.getHeight() / 2, 200).contains(x, y);
         }
     }
+
+    public JFrame getVentana() {
+        return ventana;
+    }
+
+    public void setVentana(JFrame ventana) {
+        this.ventana = ventana;
+    }
+
+    public PanelSimon getPanelSimon() {
+        return panelSimon;
+    }
+
+    public void setPanelSimon(PanelSimon panelSimon) {
+        this.panelSimon = panelSimon;
+    }
+
+    public JLabel getEtiquetaEstado() {
+        return etiquetaEstado;
+    }
+
+    public void setEtiquetaEstado(JLabel etiquetaEstado) {
+        this.etiquetaEstado = etiquetaEstado;
+    }
+
+    public JLabel getEtiquetaNivel() {
+        return etiquetaNivel;
+    }
+
+    public void setEtiquetaNivel(JLabel etiquetaNivel) {
+        this.etiquetaNivel = etiquetaNivel;
+    }
+
+    public JLabel getEtiquetaTiempo() {
+        return etiquetaTiempo;
+    }
+
+    public void setEtiquetaTiempo(JLabel etiquetaTiempo) {
+        this.etiquetaTiempo = etiquetaTiempo;
+    }
+
+    public JLabel getEtiquetaPuntuacion() {
+        return etiquetaPuntuacion;
+    }
+
+    public void setEtiquetaPuntuacion(JLabel etiquetaPuntuacion) {
+        this.etiquetaPuntuacion = etiquetaPuntuacion;
+    }
+
+    public JPanel getPanelSuperior() {
+        return panelSuperior;
+    }
+
+    public void setPanelSuperior(JPanel panelSuperior) {
+        this.panelSuperior = panelSuperior;
+    }
+
+    public ArrayList<ArcoColor> getArcos() {
+        return arcos;
+    }
+
+    public void setArcos(ArrayList<ArcoColor> arcos) {
+        this.arcos = arcos;
+    }
+    
+    
 }
