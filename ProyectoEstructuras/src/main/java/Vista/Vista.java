@@ -13,10 +13,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Shape;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Arc2D;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -88,72 +84,72 @@ public class Vista {
         private Timer temporizadorMensaje;
 
         public PanelSimon() {
-            temporizadorMensaje = new Timer(2000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    mensaje = null;
-                    repaint();
-                    temporizadorMensaje.stop();
-                }
-            });
+//            temporizadorMensaje = new Timer(2000, new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent e) {
+////                    mensaje = null;
+////                    repaint();
+////                    temporizadorMensaje.stop();
+//                }
+//            });
 
-            addMouseListener(new MouseAdapter() {
-//                @Override
-//                public void mouseClicked(MouseEvent e) {
-//                    if (!jugandoSecuencia) {
-//                        for (ArcoColor arco : arcos) {
-//                            if (arco.contiene(e.getX(), e.getY())) {
-//                                verificarSecuencia(arco);
-//                                repaint();
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void mousePressed(MouseEvent e) {
-//                    if (!jugandoSecuencia) {
-//                        for (ArcoColor arco : arcos) {
-//                            if (arco.contiene(e.getX(), e.getY())) {
-//                                arcoPressed = arco;
-//                                repaint();
-//                                break;
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void mouseReleased(MouseEvent e) {
-//                    if (arcoPressed != null) {
-//                        arcoPressed = null;
-//                        arcoHovered = null;
-//                        repaint();
-//                    }
-//                }
-            });
+//            addMouseListener(new MouseAdapter() {
+////                @Override
+////                public void mouseClicked(MouseEvent e) {
+////                    if (!jugandoSecuencia) {
+////                        for (ArcoColor arco : arcos) {
+////                            if (arco.contiene(e.getX(), e.getY())) {
+////                                verificarSecuencia(arco);
+////                                repaint();
+////                                break;
+////                            }
+////                        }
+////                    }
+////                }
+////
+////                @Override
+////                public void mousePressed(MouseEvent e) {
+////                    if (!jugandoSecuencia) {
+////                        for (ArcoColor arco : arcos) {
+////                            if (arco.contiene(e.getX(), e.getY())) {
+////                                arcoPressed = arco;
+////                                repaint();
+////                                break;
+////                            }
+////                        }
+////                    }
+////                }
+////
+////                @Override
+////                public void mouseReleased(MouseEvent e) {
+////                    if (arcoPressed != null) {
+////                        arcoPressed = null;
+////                        arcoHovered = null;
+////                        repaint();
+////                    }
+////                }
+//            });
 
-            addMouseMotionListener(new MouseMotionAdapter() {
-//                @Override
-//                public void mouseMoved(MouseEvent e) {
-//                    if (!jugandoSecuencia) {
-//                        arcoHovered = null;
-//                        for (ArcoColor arco : arcos) {
-//                            if (arco.contiene(e.getX(), e.getY())) {
-//                                arcoHovered = arco;
-//                                break;
-//                            }
-//                        }
-//                        repaint();
-//                    }
-//                }
-            });
+//            addMouseMotionListener(new MouseMotionAdapter() {
+////                @Override
+////                public void mouseMoved(MouseEvent e) {
+////                    if (!jugandoSecuencia) {
+////                        arcoHovered = null;
+////                        for (ArcoColor arco : arcos) {
+////                            if (arco.contiene(e.getX(), e.getY())) {
+////                                arcoHovered = arco;
+////                                break;
+////                            }
+////                        }
+////                        repaint();
+////                    }
+////                }
+//            });
         }
 
         public void mostrarMensaje(String msg) {
             this.mensaje = msg;
-            temporizadorMensaje.start();
+            //temporizadorMensaje.start();
             repaint();
         }
 

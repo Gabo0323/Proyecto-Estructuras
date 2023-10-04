@@ -23,7 +23,7 @@ public class Modelo {
     private int pasoActual;
     private int nivel;
     private boolean jugandoSecuencia;
-    private Timer temporizadorTurno;//NOTA: todo lo que tenga el Timer debe ser mejor incluido en el control
+    //private Timer temporizadorTurno;//NOTA: todo lo que tenga el Timer debe ser mejor incluido en el control
     private int tiempoRestante;
     private int velocidadSecuencia;
     private int puntuacion;
@@ -37,16 +37,16 @@ public class Modelo {
         secuencia = new ArrayList<>();
         nivel = 0;
         jugandoSecuencia = false;
-        temporizadorTurno = new Timer(1000, new ActionListener() {//Esto debe ir en el control
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tiempoRestante--;
-                //etiquetaTiempo.setText("Tiempo restante: 00:" + (tiempoRestante < 10 ? "0" : "") + tiempoRestante);
-                if (tiempoRestante <= 0) {
-                    //mostrarPantallaFinal();
-                }
-            }
-        });
+//        temporizadorTurno = new Timer(1000, new ActionListener() {//Esto debe ir en el control
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                tiempoRestante--;
+//                //etiquetaTiempo.setText("Tiempo restante: 00:" + (tiempoRestante < 10 ? "0" : "") + tiempoRestante);
+//                if (tiempoRestante <= 0) {
+//                    //mostrarPantallaFinal();
+//                }
+//            }
+//        });
         iniciarJuego();
     }
 
@@ -132,9 +132,9 @@ public class Modelo {
         if (tiempoRestante < 3) {
             tiempoRestante = 3;
         }
-        temporizadorTurno.stop();
-        //etiquetaTiempo.setText("Tiempo restante: 00:" + (tiempoRestante < 10 ? "0" : "") + tiempoRestante);
-        temporizadorTurno.start();
+//        temporizadorTurno.stop();
+//        //etiquetaTiempo.setText("Tiempo restante: 00:" + (tiempoRestante < 10 ? "0" : "") + tiempoRestante);
+//        temporizadorTurno.start();
     }
      
      
@@ -171,13 +171,13 @@ public class Modelo {
         this.jugandoSecuencia = jugandoSecuencia;
     }
 
-    public Timer getTemporizadorTurno() {
-        return temporizadorTurno;
-    }
-
-    public void setTemporizadorTurno(Timer temporizadorTurno) {
-        this.temporizadorTurno = temporizadorTurno;
-    }
+//    public Timer getTemporizadorTurno() {
+//        return temporizadorTurno;
+//    }
+//
+//    public void setTemporizadorTurno(Timer temporizadorTurno) {
+//        this.temporizadorTurno = temporizadorTurno;
+//    }
 
     public int getTiempoRestante() {
         return tiempoRestante;

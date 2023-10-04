@@ -3,6 +3,7 @@
  */
 package com.mycompany.proyectoestructuras;
 
+import Modelo.Modelo;
 import Vista.Vista;
 import javax.swing.*;
 import java.awt.*;
@@ -265,6 +266,7 @@ public class ProyectoEstructuras {
     public static void main(String[] args) {
         //new ProyectoEstructuras();
         Vista vis = new Vista();
+        Modelo mod = new Modelo();
     }
 
     class PanelSimon extends JPanel {
