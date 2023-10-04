@@ -3,6 +3,7 @@
  */
 package com.mycompany.proyectoestructuras;
 
+import Vista.Vista;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -262,7 +263,8 @@ public class ProyectoEstructuras {
     }
 
     public static void main(String[] args) {
-        new ProyectoEstructuras();
+        //new ProyectoEstructuras();
+        Vista vis = new Vista();
     }
 
     class PanelSimon extends JPanel {
