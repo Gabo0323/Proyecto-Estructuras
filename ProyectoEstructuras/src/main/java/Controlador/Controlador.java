@@ -6,15 +6,14 @@ package Controlador;
 
 import Modelo.*;
 import Vista.*;
+import com.mycompany.proyectoestructuras.ProyectoEstructuras;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.geom.Arc2D;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -27,6 +26,11 @@ public class Controlador {
     Modelo mod = new Modelo();
     Vista vis = new Vista();
     private Timer temporizadorTurno;
+    private boolean jugandoSecuencia;
+    private ArrayList<Vista.ArcoColor> arcos;
+    private int pasoActual;
+    private ArrayList<Integer> secuencia;
+    private JLabel etiquetaTiempo;
 
     public Controlador(Modelo m, Vista v) {
         mod = m;
@@ -44,6 +48,22 @@ public class Controlador {
             }
         });
         iniciarJuego();
+    }
+
+    public void verificarSecuencia(Vista.ArcoColor arco) {
+        if (!jugandoSecuencia) {
+            //reproducirSonido(arcos.indexOf(arco) + 1);
+            if (arco.getColor() == arcos.get(secuencia.get(pasoActual)).getColor()) {
+                pasoActual++;
+                if (pasoActual == secuencia.size()) {
+                    temporizadorTurno.stop();
+                    etiquetaTiempo.setText("Tiempo restante: 00:00");
+                    agregarPasoASecuencia();
+                }
+            } else {
+                mostrarPantallaFinal();
+            }
+        }
     }
 
     public void iniciarJuego() {
@@ -178,7 +198,7 @@ public class Controlador {
         private String mensaje = null;
         private Timer temporizadorMensaje;
 
-        public PanelSimon() {//Falta poner esto en el controlador, pero por hoy descanzo
+        public PanelSimon() {
             temporizadorMensaje = new Timer(2000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -192,7 +212,7 @@ public class Controlador {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (!jugandoSecuencia) {
-                        for (Vista.Vista.ArcoColor arco : arcos) {
+                        for (Vista.ArcoColor arco : arcos) {
                             if (arco.contiene(e.getX(), e.getY())) {
                                 verificarSecuencia(arco);
                                 repaint();
@@ -205,7 +225,7 @@ public class Controlador {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     if (!jugandoSecuencia) {
-                        for (ArcoColor arco : arcos) {
+                        for (Vista.ArcoColor arco : arcos) {
                             if (arco.contiene(e.getX(), e.getY())) {
                                 arcoPressed = arco;
                                 repaint();
@@ -230,7 +250,7 @@ public class Controlador {
                 public void mouseMoved(MouseEvent e) {
                     if (!jugandoSecuencia) {
                         arcoHovered = null;
-                        for (ArcoColor arco : arcos) {
+                        for (Vista.ArcoColor arco : arcos) {
                             if (arco.contiene(e.getX(), e.getY())) {
                                 arcoHovered = arco;
                                 break;
@@ -242,67 +262,67 @@ public class Controlador {
             });
 
 
-            public void mousePressed (MouseEvent e){
-
-                String archivoAudio = "yes.wav";
-                String archivoAudioNo = "no.wav";
-
-                if (enCircunferencia(e) && score <= listSecuencia.size() && !isIlluminationTimerRunning && recordInputs) {
-                    int sector = getSector(anguloRad);
-                    input = sector;
-
-                    if (!mainControl.compararInput(input)) {
-
-                        try {
-                            File sonido = new File("no.wav");
-                            AudioInputStream audioInputStream
-                                    = AudioSystem.getAudioInputStream(sonido);
-                            try (Clip clip = AudioSystem.getClip()) {
-                                clip.open(audioInputStream);
-
-                                clip.start();
-                                Thread.sleep(clip.getMicrosecondLength() / 1_000);
-
-                                JOptionPane.showMessageDialog(null, "¡Perdiste!", "Mensaje",
-                                        JOptionPane.ERROR_MESSAGE);
-                            }
-                        } catch (IOException | InterruptedException | LineUnavailableException |
-                                 UnsupportedAudioFileException ex) {
-                            System.err.printf("Excepción al reproducir audio: '%s'%n", ex.getMessage());
-                            ex.printStackTrace(); // Imprime la traza de excepción para obtener más detalles.
-
-                        }
-
-                        for (int i = 0; i < COLORS.length; i++) {
-                            iluminarSector(i);
-                        }
-
-                        illuminationTimer.stop();
-                        recordInputs = false;
-                        System.out.println("======");
-
-                    } else {
-                        try {
-                            File sonido = new File("yes.wav");
-                            AudioInputStream audioInputStream
-                                    = AudioSystem.getAudioInputStream(sonido);
-                            try (Clip clip = AudioSystem.getClip()) {
-                                clip.open(audioInputStream);
-
-                                clip.start();
-                                Thread.sleep(clip.getMicrosecondLength() / 1_000);
-                            }
-                        } catch (IOException | InterruptedException | LineUnavailableException |
-                                 UnsupportedAudioFileException ex) {
-                            System.err.printf("Excepción al reproducir audio: '%s'%n", ex.getMessage());
-                            ex.printStackTrace(); // Imprime la traza de excepción para obtener más detalles.
-
-                        }
-
-                        System.out.println("OK");
-                    }
-                }
-            }
+//            public void mousePressed(MouseEvent e){
+//
+//                String archivoAudio = "yes.wav";
+//                String archivoAudioNo = "no.wav";
+//
+//                if (enCircunferencia(e) && score <= listSecuencia.size() && !isIlluminationTimerRunning && recordInputs) {
+//                    int sector = getSector(anguloRad);
+//                    input = sector;
+//
+//                    if (!mainControl.compararInput(input)) {
+//
+//                        try {
+//                            File sonido = new File("no.wav");
+//                            AudioInputStream audioInputStream
+//                                    = AudioSystem.getAudioInputStream(sonido);
+//                            try (Clip clip = AudioSystem.getClip()) {
+//                                clip.open(audioInputStream);
+//
+//                                clip.start();
+//                                Thread.sleep(clip.getMicrosecondLength() / 1_000);
+//
+//                                JOptionPane.showMessageDialog(null, "¡Perdiste!", "Mensaje",
+//                                        JOptionPane.ERROR_MESSAGE);
+//                            }
+//                        } catch (IOException | InterruptedException | LineUnavailableException |
+//                                 UnsupportedAudioFileException ex) {
+//                            System.err.printf("Excepción al reproducir audio: '%s'%n", ex.getMessage());
+//                            ex.printStackTrace(); // Imprime la traza de excepción para obtener más detalles.
+//
+//                        }
+//
+//                        for (int i = 0; i < COLORS.length; i++) {
+//                            iluminarSector(i);
+//                        }
+//
+//                        illuminationTimer.stop();
+//                        recordInputs = false;
+//                        System.out.println("======");
+//
+//                    } else {
+//                        try {
+//                            File sonido = new File("yes.wav");
+//                            AudioInputStream audioInputStream
+//                                    = AudioSystem.getAudioInputStream(sonido);
+//                            try (Clip clip = AudioSystem.getClip()) {
+//                                clip.open(audioInputStream);
+//
+//                                clip.start();
+//                                Thread.sleep(clip.getMicrosecondLength() / 1_000);
+//                            }
+//                        } catch (IOException | InterruptedException | LineUnavailableException |
+//                                 UnsupportedAudioFileException ex) {
+//                            System.err.printf("Excepción al reproducir audio: '%s'%n", ex.getMessage());
+//                            ex.printStackTrace(); // Imprime la traza de excepción para obtener más detalles.
+//
+//                        }
+//
+//                        System.out.println("OK");
+//                    }
+//                }
+//            }
         }
 
         public void mostrarMensaje(String msg) {
@@ -327,7 +347,7 @@ public class Controlador {
             g2d.drawOval(centroX - radio, centroY - radio, 2 * radio, 2 * radio);
 
             // Dibuja los arcos de colores
-            for (ArcoColor arco : arcos) {
+            for (Vista.ArcoColor arco : arcos) {
                 if (arco == arcoPressed) {
                     g2d.setColor(Color.BLACK);
                 } else if (arco == arcoHovered) {
@@ -361,11 +381,21 @@ public class Controlador {
         }
     }
 
+
     public class ArcoColor {
 
         private Color color;
         private int anguloInicio;
         private boolean estaIluminado;
+        JFrame ventana;
+        private PanelSimon panelSimon;
+        private JLabel etiquetaEstado;
+        private JLabel etiquetaNivel;
+        private ArrayList<ArcoColor> arcos;
+        private JLabel etiquetaTiempo;
+        private JLabel etiquetaPuntuacion;
+        private JPanel panelSuperior;
+
 
         public ArcoColor(Color color, int anguloInicio) {
             this.color = color;
@@ -399,72 +429,71 @@ public class Controlador {
         public boolean contiene(int x, int y) {
             return getForma(ventana.getWidth() / 2, ventana.getHeight() / 2, 200).contains(x, y);
         }
+
+        public JFrame getVentana() {
+            return ventana;
+        }
+
+        public void setVentana(JFrame ventana) {
+            this.ventana = ventana;
+        }
+
+        public PanelSimon getPanelSimon() {
+            return panelSimon;
+        }
+
+        public void setPanelSimon(PanelSimon panelSimon) {
+            this.panelSimon = panelSimon;
+        }
+
+        public JLabel getEtiquetaEstado() {
+            return etiquetaEstado;
+        }
+
+        public void setEtiquetaEstado(JLabel etiquetaEstado) {
+            this.etiquetaEstado = etiquetaEstado;
+        }
+
+        public JLabel getEtiquetaNivel() {
+            return etiquetaNivel;
+        }
+
+        public void setEtiquetaNivel(JLabel etiquetaNivel) {
+            this.etiquetaNivel = etiquetaNivel;
+        }
+
+        public JLabel getEtiquetaTiempo() {
+            return etiquetaTiempo;
+        }
+
+        public void setEtiquetaTiempo(JLabel etiquetaTiempo) {
+            this.etiquetaTiempo = etiquetaTiempo;
+        }
+
+        public JLabel getEtiquetaPuntuacion() {
+            return etiquetaPuntuacion;
+        }
+
+        public void setEtiquetaPuntuacion(JLabel etiquetaPuntuacion) {
+            this.etiquetaPuntuacion = etiquetaPuntuacion;
+        }
+
+        public JPanel getPanelSuperior() {
+            return panelSuperior;
+        }
+
+        public void setPanelSuperior(JPanel panelSuperior) {
+            this.panelSuperior = panelSuperior;
+        }
+
+        public ArrayList<ArcoColor> getArcos() {
+            return arcos;
+        }
+
+        public void setArcos(ArrayList<ArcoColor> arcos) {
+            this.arcos = arcos;
+        }
     }
 
-    public JFrame getVentana() {
-        return ventana;
-    }
-
-    public void setVentana(JFrame ventana) {
-        this.ventana = ventana;
-    }
-
-    public PanelSimon getPanelSimon() {
-        return panelSimon;
-    }
-
-    public void setPanelSimon(PanelSimon panelSimon) {
-        this.panelSimon = panelSimon;
-    }
-
-    public JLabel getEtiquetaEstado() {
-        return etiquetaEstado;
-    }
-
-    public void setEtiquetaEstado(JLabel etiquetaEstado) {
-        this.etiquetaEstado = etiquetaEstado;
-    }
-
-    public JLabel getEtiquetaNivel() {
-        return etiquetaNivel;
-    }
-
-    public void setEtiquetaNivel(JLabel etiquetaNivel) {
-        this.etiquetaNivel = etiquetaNivel;
-    }
-
-    public JLabel getEtiquetaTiempo() {
-        return etiquetaTiempo;
-    }
-
-    public void setEtiquetaTiempo(JLabel etiquetaTiempo) {
-        this.etiquetaTiempo = etiquetaTiempo;
-    }
-
-    public JLabel getEtiquetaPuntuacion() {
-        return etiquetaPuntuacion;
-    }
-
-    public void setEtiquetaPuntuacion(JLabel etiquetaPuntuacion) {
-        this.etiquetaPuntuacion = etiquetaPuntuacion;
-    }
-
-    public JPanel getPanelSuperior() {
-        return panelSuperior;
-    }
-
-    public void setPanelSuperior(JPanel panelSuperior) {
-        this.panelSuperior = panelSuperior;
-    }
-
-    public ArrayList<ArcoColor> getArcos() {
-        return arcos;
-    }
-
-    public void setArcos(ArrayList<ArcoColor> arcos) {
-        this.arcos = arcos;
-    }
-
-}
 
 }
