@@ -45,6 +45,7 @@ public class Vista {
     private ArrayList<ArcoColor> arcos;
 
     public Vista() {
+        System.out.println("Constructor");
         ventana = new JFrame("Juego Simon");
         ventana.setSize(500, 600);
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

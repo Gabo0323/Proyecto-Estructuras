@@ -23,8 +23,8 @@ import javax.swing.*;
  */
 public class Controlador {
 
-    Modelo mod = new Modelo();
-    Vista vis = new Vista();
+    Modelo mod;
+    Vista vis;
     private Timer temporizadorTurno;
     private boolean jugandoSecuencia;
     private ArrayList<Vista.ArcoColor> arcos;
