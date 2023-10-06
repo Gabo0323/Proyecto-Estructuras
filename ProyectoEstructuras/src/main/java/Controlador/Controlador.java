@@ -28,7 +28,7 @@ public class Controlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mod.setTiempoRestante(mod.getTiempoRestante() - 1);
-                vis.getEtiquetaTiempo().setText("Tiempo restante: 00:" + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
+                vis.getEtiquetaTiempo().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
 
                 if (mod.getTiempoRestante() <= 0) {
                     mostrarPantallaFinal();
@@ -68,6 +68,7 @@ public class Controlador {
                         if (arco.contiene(e.getX(), e.getY())) {
 
                             vis.setArcoPressed(arco);
+                            System.out.print("Color presionado: ");
                             System.out.println(arco.getColor());
                             vis.getPanelSimon().repaint();
 
@@ -123,12 +124,13 @@ public class Controlador {
 
     public void verificarSecuencia(Vista.ArcoColor arco) {
     if (!mod.isJugandoSecuencia()) {
-        //reproducirSonido(arcos.indexOf(arco) + 1);
+        System.out.println(arco.getColor().toString());
+        System.out.println(vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor().toString());
         if (arco.getColor() == vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor()) {
             mod.setPasoActual(mod.getPasoActual() + 1);
             if (mod.getPasoActual() == mod.getSecuencia().size()) {
                 temporizadorTurno.stop();
-                vis.getEtiquetaTiempo().setText("Tiempo restante: 00:00");
+                vis.getEtiquetaTiempo().setText("TIEMPO: 0");
                 agregarPasoASecuencia();
                 mod.reproducirSonidoCorrecto(); // Llamar cuando la secuencia es correcta
             }
@@ -234,7 +236,7 @@ public class Controlador {
             mod.setTiempoRestante(3);
         }
         temporizadorTurno.stop();
-        vis.getEtiquetaTiempo().setText("Tiempo restante: 00:" + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
+        vis.getEtiquetaTiempo().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
         temporizadorTurno.start();
     }
 

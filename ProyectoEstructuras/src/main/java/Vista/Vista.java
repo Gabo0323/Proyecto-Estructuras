@@ -73,7 +73,7 @@ public class Vista {
         etiquetaNivel.setFont(new Font("Arial", Font.BOLD, 24));
         panelSuperior.add(etiquetaNivel);
 
-        etiquetaTiempo = new JLabel("Tiempo restante: 00:00", SwingConstants.CENTER);
+        etiquetaTiempo = new JLabel("TIEMPO: 0", SwingConstants.CENTER);
         etiquetaTiempo.setFont(new Font("Arial", Font.PLAIN, 20));
         panelSuperior.add(etiquetaTiempo);
 
