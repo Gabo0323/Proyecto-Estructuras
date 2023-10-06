@@ -8,6 +8,7 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -35,6 +36,7 @@ public class Vista {
     private ArrayList<ArcoColor> arcos;
     private static Vista.ArcoColor arcoHovered = null;
     private static Vista.ArcoColor arcoPressed = null;
+    private static String mensaje = null;
 
     public static ArcoColor getArcoHovered() {
         return arcoHovered;
@@ -206,15 +208,15 @@ public class Vista {
             g2d.drawOval(centroX - radioCentro, centroY - radioCentro, 2 * radioCentro, 2 * radioCentro);
 
             // Dibuja el mensaje en el centro si está presente
-//            if (mensaje != null) {
-//                g2d.setColor(Color.RED);
-//                g2d.setFont(new Font("Arial", Font.BOLD, 30));
-//                FontMetrics fm = g2d.getFontMetrics();
-//                int x = (getWidth() - fm.stringWidth(mensaje)) / 2;
-//                int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
-//                g2d.drawString(mensaje, x, y);
+            if (mensaje != null) {
+                g2d.setColor(Color.RED);
+                g2d.setFont(new Font("Arial", Font.BOLD, 30));
+                FontMetrics fm = g2d.getFontMetrics();
+                int x = (getWidth() - fm.stringWidth(mensaje)) / 2;
+                int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+                g2d.drawString(mensaje, x, y);
 //
-//            }//agregar a controlador
+            }//agregar a controlador
         }
     }
 
@@ -322,4 +324,13 @@ public class Vista {
         this.arcos = arcos;
     }
 
+    public static String getMensaje() {
+        return mensaje;
+    }
+
+    public static void setMensaje(String mensaje) {
+        Vista.mensaje = mensaje;
+    }
+
+    
 }

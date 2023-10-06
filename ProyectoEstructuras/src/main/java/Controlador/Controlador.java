@@ -20,8 +20,6 @@ public class Controlador {
     Vista vis;
     private Timer temporizadorTurno;
     private Timer temporizadorMensaje;
-    private String mensaje = null;
-    
 
     public Controlador(Modelo m, Vista v) {
         mod = m;
@@ -41,14 +39,13 @@ public class Controlador {
         temporizadorMensaje = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mensaje = null;
+                vis.setMensaje(null);
                 vis.getPanelSimon().repaint();
                 temporizadorMensaje.stop();
             }
         });
         vis.getPanelSimon().addMouseListener(new MouseAdapter() {
 
-            
             Vista arcoHovered = null;
 
             @Override
@@ -71,6 +68,7 @@ public class Controlador {
                         if (arco.contiene(e.getX(), e.getY())) {
 
                             vis.setArcoPressed(arco);
+                            System.out.println(arco.getColor());
                             vis.getPanelSimon().repaint();
 
                             break;
@@ -97,13 +95,13 @@ public class Controlador {
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (!mod.isJugandoSecuencia()) {
-                    
+
                     vis.setArcoHovered(null);
                     for (Vista.ArcoColor arco : vis.getArcos()) {
                         if (arco.contiene(e.getX(), e.getY())) {
-                            
+
                             vis.setArcoHovered(arco);
-                            
+
                             break;
                         }
                     }
@@ -115,12 +113,12 @@ public class Controlador {
         iniciarJuego();
     }
 
-    
-
     public void mostrarMensaje(String msg) {
-        this.mensaje = msg;
+        vis.setMensaje(msg);
         temporizadorMensaje.start();
         vis.getPanelSimon().repaint();
+        
+        
     }
 
     public void verificarSecuencia(Vista.ArcoColor arco) {
@@ -174,7 +172,7 @@ public class Controlador {
                 vis.getVentana().add(vis.getPanelSuperior(), BorderLayout.NORTH);
                 mod.setNivel(0);
                 mod.setPuntuacion(0);
-                mod.setMultiplicadorPuntos(0);
+                mod.setMultiplicadorPuntos(1);
                 iniciarJuego();
                 vis.getVentana().revalidate();
                 vis.getVentana().repaint();
@@ -207,15 +205,20 @@ public class Controlador {
         vis.getEtiquetaPuntuacion().setText("Puntuación: " + mod.getPuntuacion());
         if (mod.getNivel() % 4 == 0) {
             if (mod.getTiempoRestante() > 3) {
-                mod.setTiempoRestante(mod.getTiempoRestante() - 2);//ciudado, puede fallar
+                int aux = mod.getTiempoRestante();
+                aux = aux - 2;
+                mod.setTiempoRestante(aux);//ciudado, puede fallar
 
                 mostrarMensaje("TIEMPO REDUCIDO!!");
+                vis.getPanelSimon().repaint();
+
 
             }
             if (mod.getVelocidadSecuencia() > 500) {
                 mod.setVelocidadSecuencia(mod.getVelocidadSecuencia() - 100);//ciudado, puede fallar
 
                 mostrarMensaje("MÁS RÁPIDO!!!");
+                vis.getPanelSimon().repaint();
                 //reproducirSonido("moreSpeed");
                 mod.setMultiplicadorPuntos(mod.getMultiplicadorPuntos() * 10);//ciudado, puede fallar
             }
