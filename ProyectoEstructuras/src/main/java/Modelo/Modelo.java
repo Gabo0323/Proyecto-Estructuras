@@ -70,7 +70,23 @@ public class Modelo {
             e.printStackTrace();
         }
     }
-     
+    
+    public void reproducirSonidoGameOver() {
+        try {
+            File archivoSonido = new File("gameOver.wav");
+            if (archivoSonido.exists()) {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(archivoSonido);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } else {
+                System.err.println("El archivo 'gameOver.wav' no existe.");
+            }
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public ArrayList<Integer> getSecuencia() {
         return secuencia;
     }

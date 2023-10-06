@@ -143,13 +143,13 @@ public class Controlador {
 
     public void iniciarJuego() {
         mod.getSecuencia().clear();
-        //reproducirSonido("start");
+        mod.reproducirSonidoCorrecto();
         agregarPasoASecuencia();
     }
 
     public void mostrarPantallaFinal() {
         temporizadorTurno.stop();
-        //reproducirSonido("gameOver");
+        mod.reproducirSonidoGameOver(); // Terminó el juego
         vis.getVentana().remove(vis.getPanelSimon());
         vis.getVentana().remove(vis.getEtiquetaEstado());
         vis.getVentana().remove(vis.getPanelSuperior());
