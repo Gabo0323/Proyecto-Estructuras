@@ -6,16 +6,9 @@ package Controlador;
 
 import Modelo.*;
 import Vista.*;
-import com.mycompany.proyectoestructuras.ProyectoEstructuras;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Arc2D;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
-import javax.sound.sampled.*;
 import javax.swing.*;
 
 /**
@@ -26,11 +19,9 @@ public class Controlador {
     Modelo mod;
     Vista vis;
     private Timer temporizadorTurno;
-    private boolean jugandoSecuencia;
-    private ArrayList<Vista.ArcoColor> arcos;
-    private int pasoActual;
-    private ArrayList<Integer> secuencia;
-    private JLabel etiquetaTiempo;
+    private Timer temporizadorMensaje;
+    private String mensaje = null;
+    
 
     public Controlador(Modelo m, Vista v) {
         mod = m;
@@ -47,17 +38,100 @@ public class Controlador {
                 }
             }
         });
+        temporizadorMensaje = new Timer(2000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mensaje = null;
+                vis.getPanelSimon().repaint();
+                temporizadorMensaje.stop();
+            }
+        });
+        vis.getPanelSimon().addMouseListener(new MouseAdapter() {
+
+            
+            Vista arcoHovered = null;
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!mod.isJugandoSecuencia()) {
+                    for (Vista.ArcoColor arco : vis.getArcos()) {
+                        if (arco.contiene(e.getX(), e.getY())) {
+                            verificarSecuencia(arco);
+                            vis.getPanelSimon().repaint();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (!mod.isJugandoSecuencia()) {
+                    for (Vista.ArcoColor arco : vis.getArcos()) {
+                        if (arco.contiene(e.getX(), e.getY())) {
+
+                            vis.setArcoPressed(arco);
+                            vis.getPanelSimon().repaint();
+
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (vis.getArcoPressed() != null) {
+                    vis.setArcoPressed(null);
+                    vis.setArcoHovered(null);
+                    vis.getPanelSimon().repaint();
+                }
+            }
+
+        });
+
+        vis.getPanelSimon().addMouseMotionListener(new MouseMotionAdapter() {
+            Vista.ArcoColor arcoPressed = null;
+            Vista.ArcoColor arcoHovered = null;
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (!mod.isJugandoSecuencia()) {
+                    
+                    vis.setArcoHovered(null);
+                    for (Vista.ArcoColor arco : vis.getArcos()) {
+                        if (arco.contiene(e.getX(), e.getY())) {
+                            
+                            vis.setArcoHovered(arco);
+                            
+                            break;
+                        }
+                    }
+                    vis.getPanelSimon().repaint();
+                }
+            }
+        });
+
         iniciarJuego();
     }
 
+    
+
+    public void mostrarMensaje(String msg) {
+        this.mensaje = msg;
+        temporizadorMensaje.start();
+        vis.getPanelSimon().repaint();
+    }
+
     public void verificarSecuencia(Vista.ArcoColor arco) {
-        if (!jugandoSecuencia) {
+        if (!mod.isJugandoSecuencia()) {
             //reproducirSonido(arcos.indexOf(arco) + 1);
-            if (arco.getColor() == arcos.get(secuencia.get(pasoActual)).getColor()) {
-                pasoActual++;
-                if (pasoActual == secuencia.size()) {
+            if (arco.getColor() == vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor()) {
+
+                mod.setPasoActual(mod.getPasoActual() + 1);
+                if (mod.getPasoActual() == mod.getSecuencia().size()) {
                     temporizadorTurno.stop();
-                    etiquetaTiempo.setText("Tiempo restante: 00:00");
+                    vis.getEtiquetaTiempo().setText("Tiempo restante: 00:00");
                     agregarPasoASecuencia();
                 }
             } else {
@@ -125,6 +199,7 @@ public class Controlador {
     public void agregarPasoASecuencia() {
         Random rand = new Random();
         mod.getSecuencia().add(rand.nextInt(4));
+
         mod.setPasoActual(0);
         mod.setNivel(mod.getNivel() + 1);
         vis.getEtiquetaNivel().setText("Nivel " + mod.getNivel());
@@ -134,13 +209,13 @@ public class Controlador {
             if (mod.getTiempoRestante() > 3) {
                 mod.setTiempoRestante(mod.getTiempoRestante() - 2);//ciudado, puede fallar
 
-                vis.getPanelSimon().mostrarMensaje("TIEMPO REDUCIDO!!");
+                mostrarMensaje("TIEMPO REDUCIDO!!");
 
             }
             if (mod.getVelocidadSecuencia() > 500) {
                 mod.setVelocidadSecuencia(mod.getVelocidadSecuencia() - 100);//ciudado, puede fallar
 
-                vis.getPanelSimon().mostrarMensaje("MÁS RÁPIDO!!!");
+                mostrarMensaje("MÁS RÁPIDO!!!");
                 //reproducirSonido("moreSpeed");
                 mod.setMultiplicadorPuntos(mod.getMultiplicadorPuntos() * 10);//ciudado, puede fallar
             }
@@ -190,310 +265,4 @@ public class Controlador {
             temporizador.start();
         }
     }
-
-    public class PanelSimon extends JPanel {
-
-        private Vista.ArcoColor arcoHovered = null;
-        private Vista.ArcoColor arcoPressed = null;
-        private String mensaje = null;
-        private Timer temporizadorMensaje;
-
-        public PanelSimon() {
-            temporizadorMensaje = new Timer(2000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    mensaje = null;
-                    repaint();
-                    temporizadorMensaje.stop();
-                }
-            });
-
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (!jugandoSecuencia) {
-                        for (Vista.ArcoColor arco : arcos) {
-                            if (arco.contiene(e.getX(), e.getY())) {
-                                verificarSecuencia(arco);
-                                repaint();
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (!jugandoSecuencia) {
-                        for (Vista.ArcoColor arco : arcos) {
-                            if (arco.contiene(e.getX(), e.getY())) {
-                                arcoPressed = arco;
-                                repaint();
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    if (arcoPressed != null) {
-                        arcoPressed = null;
-                        arcoHovered = null;
-                        repaint();
-                    }
-                }
-            });
-
-            addMouseMotionListener(new MouseMotionAdapter() {
-                @Override
-                public void mouseMoved(MouseEvent e) {
-                    if (!jugandoSecuencia) {
-                        arcoHovered = null;
-                        for (Vista.ArcoColor arco : arcos) {
-                            if (arco.contiene(e.getX(), e.getY())) {
-                                arcoHovered = arco;
-                                break;
-                            }
-                        }
-                        repaint();
-                    }
-                }
-            });
-
-
-//            public void mousePressed(MouseEvent e){
-//
-//                String archivoAudio = "yes.wav";
-//                String archivoAudioNo = "no.wav";
-//
-//                if (enCircunferencia(e) && score <= listSecuencia.size() && !isIlluminationTimerRunning && recordInputs) {
-//                    int sector = getSector(anguloRad);
-//                    input = sector;
-//
-//                    if (!mainControl.compararInput(input)) {
-//
-//                        try {
-//                            File sonido = new File("no.wav");
-//                            AudioInputStream audioInputStream
-//                                    = AudioSystem.getAudioInputStream(sonido);
-//                            try (Clip clip = AudioSystem.getClip()) {
-//                                clip.open(audioInputStream);
-//
-//                                clip.start();
-//                                Thread.sleep(clip.getMicrosecondLength() / 1_000);
-//
-//                                JOptionPane.showMessageDialog(null, "¡Perdiste!", "Mensaje",
-//                                        JOptionPane.ERROR_MESSAGE);
-//                            }
-//                        } catch (IOException | InterruptedException | LineUnavailableException |
-//                                 UnsupportedAudioFileException ex) {
-//                            System.err.printf("Excepción al reproducir audio: '%s'%n", ex.getMessage());
-//                            ex.printStackTrace(); // Imprime la traza de excepción para obtener más detalles.
-//
-//                        }
-//
-//                        for (int i = 0; i < COLORS.length; i++) {
-//                            iluminarSector(i);
-//                        }
-//
-//                        illuminationTimer.stop();
-//                        recordInputs = false;
-//                        System.out.println("======");
-//
-//                    } else {
-//                        try {
-//                            File sonido = new File("yes.wav");
-//                            AudioInputStream audioInputStream
-//                                    = AudioSystem.getAudioInputStream(sonido);
-//                            try (Clip clip = AudioSystem.getClip()) {
-//                                clip.open(audioInputStream);
-//
-//                                clip.start();
-//                                Thread.sleep(clip.getMicrosecondLength() / 1_000);
-//                            }
-//                        } catch (IOException | InterruptedException | LineUnavailableException |
-//                                 UnsupportedAudioFileException ex) {
-//                            System.err.printf("Excepción al reproducir audio: '%s'%n", ex.getMessage());
-//                            ex.printStackTrace(); // Imprime la traza de excepción para obtener más detalles.
-//
-//                        }
-//
-//                        System.out.println("OK");
-//                    }
-//                }
-//            }
-        }
-
-        public void mostrarMensaje(String msg) {
-            this.mensaje = msg;
-            temporizadorMensaje.start();
-            repaint();
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-
-            int centroX = getWidth() / 2;
-            int centroY = getHeight() / 2;
-            int radio = 200;
-
-            // Dibuja el círculo grande blanco
-            g2d.setColor(Color.WHITE);
-            g2d.fillOval(centroX - radio, centroY - radio, 2 * radio, 2 * radio);
-            g2d.setColor(Color.BLACK);
-            g2d.drawOval(centroX - radio, centroY - radio, 2 * radio, 2 * radio);
-
-            // Dibuja los arcos de colores
-            for (Vista.ArcoColor arco : arcos) {
-                if (arco == arcoPressed) {
-                    g2d.setColor(Color.BLACK);
-                } else if (arco == arcoHovered) {
-                    g2d.setColor(arco.getColor().darker());
-                } else {
-                    g2d.setColor(arco.getColorActual());
-                }
-                g2d.fill(arco.getForma(centroX, centroY, radio));
-                g2d.setColor(Color.BLACK);
-                g2d.setStroke(new BasicStroke(10));
-                g2d.draw(arco.getForma(centroX, centroY, radio));
-            }
-
-            // Dibuja el círculo gris en el centro
-            int radioCentro = 50; // Puedes ajustar este valor según prefieras
-            g2d.setColor(Color.GRAY);
-            g2d.fillOval(centroX - radioCentro, centroY - radioCentro, 2 * radioCentro, 2 * radioCentro);
-            g2d.setColor(Color.BLACK);
-            g2d.drawOval(centroX - radioCentro, centroY - radioCentro, 2 * radioCentro, 2 * radioCentro);
-
-            // Dibuja el mensaje en el centro si está presente
-            if (mensaje != null) {
-                g2d.setColor(Color.RED);
-                g2d.setFont(new Font("Arial", Font.BOLD, 30));
-                FontMetrics fm = g2d.getFontMetrics();
-                int x = (getWidth() - fm.stringWidth(mensaje)) / 2;
-                int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
-                g2d.drawString(mensaje, x, y);
-
-            }
-        }
-    }
-
-
-    public class ArcoColor {
-
-        private Color color;
-        private int anguloInicio;
-        private boolean estaIluminado;
-        JFrame ventana;
-        private PanelSimon panelSimon;
-        private JLabel etiquetaEstado;
-        private JLabel etiquetaNivel;
-        private ArrayList<ArcoColor> arcos;
-        private JLabel etiquetaTiempo;
-        private JLabel etiquetaPuntuacion;
-        private JPanel panelSuperior;
-
-
-        public ArcoColor(Color color, int anguloInicio) {
-            this.color = color;
-            this.anguloInicio = anguloInicio;
-            this.estaIluminado = false;
-        }
-
-        public Color getColor() {
-            return color;
-        }
-
-        public Color getColorActual() {
-            if (estaIluminado) {
-                return Color.BLACK;
-            }
-            return color;
-        }
-
-        public Shape getForma(int x, int y, int r) {
-            return new Arc2D.Double(x - r, y - r, 2 * r, 2 * r, anguloInicio, 90, Arc2D.PIE);
-        }
-
-        public void iluminar() {
-            estaIluminado = true;
-        }
-
-        public void detenerIluminacion() {
-            estaIluminado = false;
-        }
-
-        public boolean contiene(int x, int y) {
-            return getForma(ventana.getWidth() / 2, ventana.getHeight() / 2, 200).contains(x, y);
-        }
-
-        public JFrame getVentana() {
-            return ventana;
-        }
-
-        public void setVentana(JFrame ventana) {
-            this.ventana = ventana;
-        }
-
-        public PanelSimon getPanelSimon() {
-            return panelSimon;
-        }
-
-        public void setPanelSimon(PanelSimon panelSimon) {
-            this.panelSimon = panelSimon;
-        }
-
-        public JLabel getEtiquetaEstado() {
-            return etiquetaEstado;
-        }
-
-        public void setEtiquetaEstado(JLabel etiquetaEstado) {
-            this.etiquetaEstado = etiquetaEstado;
-        }
-
-        public JLabel getEtiquetaNivel() {
-            return etiquetaNivel;
-        }
-
-        public void setEtiquetaNivel(JLabel etiquetaNivel) {
-            this.etiquetaNivel = etiquetaNivel;
-        }
-
-        public JLabel getEtiquetaTiempo() {
-            return etiquetaTiempo;
-        }
-
-        public void setEtiquetaTiempo(JLabel etiquetaTiempo) {
-            this.etiquetaTiempo = etiquetaTiempo;
-        }
-
-        public JLabel getEtiquetaPuntuacion() {
-            return etiquetaPuntuacion;
-        }
-
-        public void setEtiquetaPuntuacion(JLabel etiquetaPuntuacion) {
-            this.etiquetaPuntuacion = etiquetaPuntuacion;
-        }
-
-        public JPanel getPanelSuperior() {
-            return panelSuperior;
-        }
-
-        public void setPanelSuperior(JPanel panelSuperior) {
-            this.panelSuperior = panelSuperior;
-        }
-
-        public ArrayList<ArcoColor> getArcos() {
-            return arcos;
-        }
-
-        public void setArcos(ArrayList<ArcoColor> arcos) {
-            this.arcos = arcos;
-        }
-    }
-
-
 }

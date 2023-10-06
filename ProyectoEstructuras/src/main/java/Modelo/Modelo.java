@@ -4,13 +4,7 @@
  */
 package Modelo;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Random;
-import javax.swing.Timer;
 
 /**
  *
@@ -23,7 +17,6 @@ public class Modelo {
     private int pasoActual;
     private int nivel;
     private boolean jugandoSecuencia;
-    //private Timer temporizadorTurno;//NOTA: todo lo que tenga el Timer debe ser mejor incluido en el control
     private int tiempoRestante;
     private int velocidadSecuencia;
     private int puntuacion;
