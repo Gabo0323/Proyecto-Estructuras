@@ -124,21 +124,22 @@ public class Controlador {
     }
 
     public void verificarSecuencia(Vista.ArcoColor arco) {
-        if (!mod.isJugandoSecuencia()) {
-            //reproducirSonido(arcos.indexOf(arco) + 1);
-            if (arco.getColor() == vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor()) {
-
-                mod.setPasoActual(mod.getPasoActual() + 1);
-                if (mod.getPasoActual() == mod.getSecuencia().size()) {
-                    temporizadorTurno.stop();
-                    vis.getEtiquetaTiempo().setText("Tiempo restante: 00:00");
-                    agregarPasoASecuencia();
-                }
-            } else {
-                mostrarPantallaFinal();
+    if (!mod.isJugandoSecuencia()) {
+        //reproducirSonido(arcos.indexOf(arco) + 1);
+        if (arco.getColor() == vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor()) {
+            mod.setPasoActual(mod.getPasoActual() + 1);
+            if (mod.getPasoActual() == mod.getSecuencia().size()) {
+                temporizadorTurno.stop();
+                vis.getEtiquetaTiempo().setText("Tiempo restante: 00:00");
+                agregarPasoASecuencia();
+                mod.reproducirSonidoCorrecto(); // Llamar cuando la secuencia es correcta
             }
+        } else {
+            mostrarPantallaFinal();
+            mod.reproducirSonidoIncorrecto(); // Llamar cuando la secuencia es incorrecta
         }
     }
+}
 
     public void iniciarJuego() {
         mod.getSecuencia().clear();
