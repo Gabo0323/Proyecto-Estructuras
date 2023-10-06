@@ -99,77 +99,7 @@ public class Vista {
 //        private Timer temporizadorMensaje;
 
         public PanelSimon() {//Falta poner esto en el controlador, pero por hoy descanzo
-
-
-//                            public void mousePressed(MouseEvent e) {
-//
-//                                String archivoAudio = "yes.wav";
-//                                String archivoAudioNo = "no.wav";
-//
-//                                if (enCircunferencia(e) && score <= listSecuencia.size() && !isIlluminationTimerRunning && recordInputs) {
-//                                    int sector = getSector(anguloRad);
-//                                    input = sector;
-//
-//                                    if (!mainControl.compararInput(input)) {
-//
-//                                        try {
-//                                            File sonido = new File("no.wav");
-//                                            AudioInputStream audioInputStream
-//                                                    = AudioSystem.getAudioInputStream(sonido);
-//                                            try (Clip clip = AudioSystem.getClip()) {
-//                                                clip.open(audioInputStream);
-//
-//                                                clip.start();
-//                                                Thread.sleep(clip.getMicrosecondLength() / 1_000);
-//
-//                                                JOptionPane.showMessageDialog(null, "¡Perdiste!", "Mensaje",
-//                                                        JOptionPane.ERROR_MESSAGE);
-//                                            }
-//                                        } catch (IOException | InterruptedException | LineUnavailableException | UnsupportedAudioFileException ex) {
-//                                            System.err.printf("Excepción al reproducir audio: '%s'%n", ex.getMessage());
-//                                            ex.printStackTrace(); // Imprime la traza de excepción para obtener más detalles.
-//
-//                                        }
-//
-//                                        for (int i = 0; i < COLORS.length; i++) {
-//                                            iluminarSector(i);
-//                                        }
-//
-//                                        illuminationTimer.stop();
-//                                        recordInputs = false;
-//                                        System.out.println("======");
-//
-//                                    } else {
-//                                        try {
-//                                            File sonido = new File("yes.wav");
-//                                            AudioInputStream audioInputStream
-//                                                    = AudioSystem.getAudioInputStream(sonido);
-//                                            try (Clip clip = AudioSystem.getClip()) {
-//                                                clip.open(audioInputStream);
-//
-//                                                clip.start();
-//                                                Thread.sleep(clip.getMicrosecondLength() / 1_000);
-//                                            }
-//                                        } catch (IOException | InterruptedException | LineUnavailableException | UnsupportedAudioFileException ex) {
-//                                            System.err.printf("Excepción al reproducir audio: '%s'%n", ex.getMessage());
-//                                            ex.printStackTrace(); // Imprime la traza de excepción para obtener más detalles.
-//
-//                                        }
-//
-//                                        System.out.println("OK");
-//                                    }
-//                                }
-//
-//                            }
-//                        }
-//
-//                    );
-
         }
-
-        
-        
-        
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
