@@ -40,49 +40,18 @@ public class Modelo {
     }
 
     
-     public void reproducirSonidoCorrecto() {
+    public void reproducirSonido(String nombreArchivo) {
         try {
-            File archivoSonido = new File("yes.wav");
+            File archivoSonido = new File(nombreArchivo);
             if (archivoSonido.exists()) {
                 AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(archivoSonido);
                 Clip clip = AudioSystem.getClip();
                 clip.open(audioInputStream);
                 clip.start();
             } else {
-                System.err.println("El archivo 'yes.wav' no existe.");
+                System.err.println("El archivo de sonido '" + nombreArchivo + "' no existe.");
             }
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-    public void reproducirSonidoIncorrecto() {
-        try {
-            File archivoSonido = new File("no.wav");
-            if (archivoSonido.exists()) {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(archivoSonido);
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
-            } else {
-                System.err.println("El archivo 'no.wav' no existe.");
-            }
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void reproducirSonidoGameOver() {
-        try {
-            File archivoSonido = new File("gameOver.wav");
-            if (archivoSonido.exists()) {
-                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(archivoSonido);
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
-            } else {
-                System.err.println("El archivo 'gameOver.wav' no existe.");
-            }
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+        } catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         }
     }

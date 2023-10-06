@@ -132,24 +132,24 @@ public class Controlador {
                 temporizadorTurno.stop();
                 vis.getEtiquetaTiempo().setText("TIEMPO: 0");
                 agregarPasoASecuencia();
-                mod.reproducirSonidoCorrecto(); // Llamar cuando la secuencia es correcta
+               mod.reproducirSonido("yes.wav"); // Llamar cuando la secuencia es correcta
             }
         } else {
             mostrarPantallaFinal();
-            mod.reproducirSonidoIncorrecto(); // Llamar cuando la secuencia es incorrecta
+            mod.reproducirSonido("no.wav"); // Llamar cuando la secuencia es incorrecta
         }
     }
 }
 
     public void iniciarJuego() {
         mod.getSecuencia().clear();
-        mod.reproducirSonidoCorrecto();
+        mod.reproducirSonido("start.wav"); // Llamar cuando la secuencia es correcta
         agregarPasoASecuencia();
     }
 
     public void mostrarPantallaFinal() {
         temporizadorTurno.stop();
-        mod.reproducirSonidoGameOver(); // Terminó el juego
+        mod.reproducirSonido("gameOver.wav"); // Terminó el juego
         vis.getVentana().remove(vis.getPanelSimon());
         vis.getVentana().remove(vis.getEtiquetaEstado());
         vis.getVentana().remove(vis.getPanelSuperior());
