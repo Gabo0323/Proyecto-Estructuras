@@ -5,7 +5,13 @@
 package Modelo;
 
 import java.util.ArrayList;
-
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.File;
+import java.io.IOException;
 /**
  *
  * @author Dell
@@ -34,21 +40,37 @@ public class Modelo {
     }
 
     
-     public void reproducirSonido(String nombreArchivo) {
-//        try {
-//            FileInputStream fis = new FileInputStream(nombreArchivo + ".mp3");
-//            Player player = new Player(fis);
-//            new Thread(() -> {
-//                try {
-//                    player.play();
-//                } catch (JavaLayerException e) {
-//                    e.printStackTrace();
-//                }
-//            }).start();
-//        } catch (JavaLayerException | FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
+     public void reproducirSonidoCorrecto() {
+        try {
+            File archivoSonido = new File("yes.wav");
+            if (archivoSonido.exists()) {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(archivoSonido);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } else {
+                System.err.println("El archivo 'yes.wav' no existe.");
+            }
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
+    public void reproducirSonidoIncorrecto() {
+        try {
+            File archivoSonido = new File("no.wav");
+            if (archivoSonido.exists()) {
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(archivoSonido);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+            } else {
+                System.err.println("El archivo 'no.wav' no existe.");
+            }
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+     
     public ArrayList<Integer> getSecuencia() {
         return secuencia;
     }
