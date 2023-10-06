@@ -68,8 +68,8 @@ public class Controlador {
                         if (arco.contiene(e.getX(), e.getY())) {
 
                             vis.setArcoPressed(arco);
-                            System.out.print("Color presionado: ");
-                            System.out.println(arco.getColor());
+//                            System.out.print("Color presionado: ");
+//                            System.out.println(arco.getColor());
                             vis.getPanelSimon().repaint();
 
                             break;
@@ -124,8 +124,8 @@ public class Controlador {
 
     public void verificarSecuencia(Vista.ArcoColor arco) {
     if (!mod.isJugandoSecuencia()) {
-        System.out.println(arco.getColor().toString());
-        System.out.println(vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor().toString());
+//        System.out.println(arco.getColor().toString());
+//        System.out.println(vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor().toString());
         if (arco.getColor() == vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor()) {
             mod.setPasoActual(mod.getPasoActual() + 1);
             if (mod.getPasoActual() == mod.getSecuencia().size()) {
