@@ -12,8 +12,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
+
 /**
- *
  * @author Dell
  */
 
@@ -36,10 +36,9 @@ public class Modelo {
         secuencia = new ArrayList<>();
         nivel = 0;
         jugandoSecuencia = false;
-
     }
 
-    
+    //Método para reproducir sonidos
     public void reproducirSonido(String nombreArchivo) {
         try {
             File archivoSonido = new File(nombreArchivo);
@@ -55,7 +54,7 @@ public class Modelo {
             e.printStackTrace();
         }
     }
-    
+
     public ArrayList<Integer> getSecuencia() {
         return secuencia;
     }
@@ -120,5 +119,4 @@ public class Modelo {
     public void setMultiplicadorPuntos(int multiplicadorPuntos) {
         this.multiplicadorPuntos = multiplicadorPuntos;
     }
-    
 }
