@@ -13,6 +13,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -20,7 +21,6 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 /**
- *
  * @author Dell
  */
 public class Modelo {
@@ -42,11 +42,13 @@ public class Modelo {
         secuencia = new ArrayList<>();
         nivel = 0;
         jugandoSecuencia = false;
-
         cargarDatos();
     }
 
-    public void reproducirSonido(String nombreArchivo) {
+
+
+//Método para reproducir sonidos
+public void reproducirSonido(String nombreArchivo) {
         try {
             File archivoSonido = new File(nombreArchivo);
             if (archivoSonido.exists()) {
@@ -146,5 +148,4 @@ public class Modelo {
             e.printStackTrace();
         }
     }
-
 }

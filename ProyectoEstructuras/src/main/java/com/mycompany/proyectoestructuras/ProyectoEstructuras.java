@@ -8,10 +8,10 @@ import Modelo.Modelo;
 import Vista.Vista;
 
 public class ProyectoEstructuras {
-
-    
     public static void main(String[] args) {
-        Controlador con = new Controlador(new Modelo(),new Vista());
-    }
 
+        Controlador con = new Controlador(new Modelo(),new Vista());
+
+
+    }
 }

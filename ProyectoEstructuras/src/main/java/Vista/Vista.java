@@ -21,7 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 /**
- *
  * @author Dell
  */
 public class Vista {
@@ -54,6 +53,7 @@ public class Vista {
         Vista.arcoPressed = arcoPressed;
     }
 
+    //Constructor de la clase vista con todos los elementos necesarios
     public Vista() {
         System.out.println("Constructor");
         ventana = new JFrame("Juego Simon");
@@ -93,13 +93,9 @@ public class Vista {
     }
 
     public class PanelSimon extends JPanel {
-
-        
-//        private String mensaje = null;
-//        private Timer temporizadorMensaje;
-
-        public PanelSimon() {//Falta poner esto en el controlador, pero por hoy descanzo
+        public PanelSimon() {
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -145,13 +141,11 @@ public class Vista {
                 int x = (getWidth() - fm.stringWidth(mensaje)) / 2;
                 int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
                 g2d.drawString(mensaje, x, y);
-//
-            }//agregar a controlador
+            }
         }
     }
 
     public class ArcoColor {
-
         private Color color;
         private int anguloInicio;
         private boolean estaIluminado;
@@ -262,5 +256,5 @@ public class Vista {
         Vista.mensaje = mensaje;
     }
 
-    
+
 }
