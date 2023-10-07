@@ -12,6 +12,8 @@ public class ProyectoEstructuras {
     
     public static void main(String[] args) {
         Controlador con = new Controlador(new Modelo(),new Vista());
+//        Modelo mod = new Modelo();
+//        mod.reproducirSonido("1.wav");
     }
 
 }

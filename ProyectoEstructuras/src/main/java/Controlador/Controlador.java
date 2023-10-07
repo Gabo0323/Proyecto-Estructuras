@@ -68,6 +68,15 @@ public class Controlador {
                         if (arco.contiene(e.getX(), e.getY())) {
 
                             vis.setArcoPressed(arco);
+                            if(arco.getColor().equals(Color.RED)){
+                                mod.reproducirSonido("1.wav");
+                            }else if(arco.getColor().equals(Color.BLUE)){
+                                mod.reproducirSonido("2.wav");
+                            }else if(arco.getColor().equals(Color.GREEN)){
+                                mod.reproducirSonido("3.wav");
+                            }else if(arco.getColor().equals(Color.YELLOW)){
+                                mod.reproducirSonido("4.wav");
+                            }
 //                            System.out.print("Color presionado: ");
 //                            System.out.println(arco.getColor());
                             vis.getPanelSimon().repaint();
@@ -249,6 +258,15 @@ public class Controlador {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     vis.getArcos().get(mod.getSecuencia().get(indiceFinal)).iluminar();
+                    if(vis.getArcos().get(mod.getSecuencia().get(indiceFinal)).getColor().equals(Color.RED)){
+                        mod.reproducirSonido("1.wav");
+                    } else if(vis.getArcos().get(mod.getSecuencia().get(indiceFinal)).getColor().equals(Color.BLUE)){
+                        mod.reproducirSonido("2.wav");
+                    } else if(vis.getArcos().get(mod.getSecuencia().get(indiceFinal)).getColor().equals(Color.GREEN)){
+                        mod.reproducirSonido("3.wav");
+                    } else if(vis.getArcos().get(mod.getSecuencia().get(indiceFinal)).getColor().equals(Color.YELLOW)){
+                        mod.reproducirSonido("4.wav");
+                    }
                     //reproducirSonido(secuencia.get(indiceFinal) + 1);
                     vis.getPanelSimon().repaint();
                     Timer temporizadorRetornoColor = new Timer(mod.getVelocidadSecuencia() / 2, new ActionListener() {
