@@ -11,14 +11,11 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
+
 
 /**
  * @author Dell
@@ -28,27 +25,25 @@ public class Modelo {
     private ArrayList<Integer> secuencia;
     private int pasoActual;
     private int nivel;
-    private boolean jugandoSecuencia;
+    private boolean jugando;
     private int tiempoRestante;
-    private int velocidadSecuencia;
-    private int puntuacion;
-    private int multiplicadorPuntos;
+    private int velocidadDeSecuencia;
+    private int puntos;
+    private int multiplicadorDePuntos;
 
     public Modelo() {
         tiempoRestante = 15;
-        velocidadSecuencia = 1000;
-        puntuacion = 0;
-        multiplicadorPuntos = 1;
+        velocidadDeSecuencia = 1000;
+        puntos = 0;
+        multiplicadorDePuntos = 1;
         secuencia = new ArrayList<>();
         nivel = 0;
-        jugandoSecuencia = false;
+        jugando = false;
         cargarDatos();
     }
 
-
-
 //Método para reproducir sonidos
-public void reproducirSonido(String nombreArchivo) {
+    public void reproducirSonido(String nombreArchivo) {
         try {
             File archivoSonido = new File(nombreArchivo);
             if (archivoSonido.exists()) {
@@ -88,12 +83,12 @@ public void reproducirSonido(String nombreArchivo) {
         this.nivel = nivel;
     }
 
-    public boolean isJugandoSecuencia() {
-        return jugandoSecuencia;
+    public boolean isJugando() {
+        return jugando;
     }
 
-    public void setJugandoSecuencia(boolean jugandoSecuencia) {
-        this.jugandoSecuencia = jugandoSecuencia;
+    public void setJugando(boolean jugando) {
+        this.jugando = jugando;
     }
 
     public int getTiempoRestante() {
@@ -104,28 +99,28 @@ public void reproducirSonido(String nombreArchivo) {
         this.tiempoRestante = tiempoRestante;
     }
 
-    public int getVelocidadSecuencia() {
-        return velocidadSecuencia;
+    public int getVelocidadDeSecuencia() {
+        return velocidadDeSecuencia;
     }
 
-    public void setVelocidadSecuencia(int velocidadSecuencia) {
-        this.velocidadSecuencia = velocidadSecuencia;
+    public void setVelocidadDeSecuencia(int velocidadDeSecuencia) {
+        this.velocidadDeSecuencia = velocidadDeSecuencia;
     }
 
-    public int getPuntuacion() {
-        return puntuacion;
+    public int getPuntos() {
+        return puntos;
     }
 
-    public void setPuntuacion(int puntuacion) {
-        this.puntuacion = puntuacion;
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
     }
 
-    public int getMultiplicadorPuntos() {
-        return multiplicadorPuntos;
+    public int getMultiplicadorDePuntos() {
+        return multiplicadorDePuntos;
     }
 
-    public void setMultiplicadorPuntos(int multiplicadorPuntos) {
-        this.multiplicadorPuntos = multiplicadorPuntos;
+    public void setMultiplicadorDePuntos(int multiplicadorDePuntos) {
+        this.multiplicadorDePuntos = multiplicadorDePuntos;
     }
 
     public void cargarDatos() {
@@ -141,8 +136,8 @@ public void reproducirSonido(String nombreArchivo) {
             String velocidadDeSecuencia = datosElement.getChildText("VelocidadDeSecuencia");
             String MultiplicadorDePuntos = datosElement.getChildText("MultiplicadorDePuntos");
             tiempoRestante = Integer.valueOf(tempo);
-            velocidadSecuencia = Integer.valueOf(velocidadDeSecuencia);
-            multiplicadorPuntos = Integer.valueOf(MultiplicadorDePuntos);
+            this.velocidadDeSecuencia = Integer.valueOf(velocidadDeSecuencia);
+            multiplicadorDePuntos = Integer.valueOf(MultiplicadorDePuntos);
 
         } catch (Exception e) {
             e.printStackTrace();

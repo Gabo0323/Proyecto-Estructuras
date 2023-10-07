@@ -25,63 +25,62 @@ import javax.swing.SwingConstants;
  */
 public class Vista {
 
-    private JFrame ventana;
+    private JFrame vent;
     private PanelSimon panelSimon;
     private JLabel etiquetaEstado;
-    private JLabel etiquetaNivel;
-    private JLabel etiquetaTiempo;
+    private JLabel etiquetaNivelActual;
+    private JLabel etiquetaTiempoRestante;
     private JLabel etiquetaPuntuacion;
-    private JPanel panelSuperior;
+    private JPanel panelArriba;
     private ArrayList<ArcoColor> arcos;
-    private static Vista.ArcoColor arcoHovered = null;
-    private static Vista.ArcoColor arcoPressed = null;
+    private static Vista.ArcoColor arcoPosado = null;
+    private static Vista.ArcoColor arcoPresionado = null;
     private static String mensaje = null;
 
-    public static ArcoColor getArcoHovered() {
-        return arcoHovered;
+    public static ArcoColor getArcoPosado() {
+        return arcoPosado;
     }
 
-    public static void setArcoHovered(ArcoColor arcoHovered) {
-        Vista.arcoHovered = arcoHovered;
+    public static void setArcoPosado(ArcoColor arcoPosado) {
+        Vista.arcoPosado = arcoPosado;
     }
 
-    public static ArcoColor getArcoPressed() {
-        return arcoPressed;
+    public static ArcoColor getArcoPresionado() {
+        return arcoPresionado;
     }
 
-    public static void setArcoPressed(ArcoColor arcoPressed) {
-        Vista.arcoPressed = arcoPressed;
+    public static void setArcoPresionado(ArcoColor arcoPresionado) {
+        Vista.arcoPresionado = arcoPresionado;
     }
 
     //Constructor de la clase vista con todos los elementos necesarios
     public Vista() {
-        System.out.println("Constructor");
-        ventana = new JFrame("Juego Simon");
-        ventana.setSize(500, 600);
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setLayout(new BorderLayout());
-        ventana.setLocationRelativeTo(null);
+        vent = new JFrame("Simon");
+        vent.setSize(500, 600);
+        vent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        vent.setLayout(new BorderLayout());
+        vent.setLocationRelativeTo(null);
 
         panelSimon = new PanelSimon();
-        ventana.add(panelSimon, BorderLayout.CENTER);
+        vent.add(panelSimon, BorderLayout.CENTER);
 
         etiquetaEstado = new JLabel("Mira la secuencia", SwingConstants.CENTER);
-        ventana.add(etiquetaEstado, BorderLayout.SOUTH);
+        vent.add(etiquetaEstado, BorderLayout.SOUTH);
 
-        panelSuperior = new JPanel(new GridLayout(3, 1));
-        etiquetaNivel = new JLabel("Nivel 1", SwingConstants.CENTER);
-        etiquetaNivel.setFont(new Font("Arial", Font.BOLD, 24));
-        panelSuperior.add(etiquetaNivel);
+        panelArriba = new JPanel(new GridLayout(3, 1));
+        etiquetaNivelActual = new JLabel("Nivel 1", SwingConstants.CENTER);
+        etiquetaNivelActual.setFont(new Font("Arial", Font.BOLD, 24));
+        panelArriba.add(etiquetaNivelActual);
 
-        etiquetaTiempo = new JLabel("TIEMPO: 0", SwingConstants.CENTER);
-        etiquetaTiempo.setFont(new Font("Arial", Font.PLAIN, 20));
-        panelSuperior.add(etiquetaTiempo);
+        etiquetaTiempoRestante = new JLabel("TIEMPO: 0", SwingConstants.CENTER);
+        etiquetaTiempoRestante.setFont(new Font("Arial", Font.PLAIN, 20));
+        panelArriba.add(etiquetaTiempoRestante);
 
         etiquetaPuntuacion = new JLabel("Puntuación: 0", SwingConstants.CENTER);
         etiquetaPuntuacion.setFont(new Font("Arial", Font.PLAIN, 20));
-        panelSuperior.add(etiquetaPuntuacion);
+        panelArriba.add(etiquetaPuntuacion);
 
-        ventana.add(panelSuperior, BorderLayout.NORTH);
+        vent.add(panelArriba, BorderLayout.NORTH);
 
         arcos = new ArrayList<>();
 
@@ -89,10 +88,11 @@ public class Vista {
         arcos.add(new ArcoColor(Color.BLUE, 90));
         arcos.add(new ArcoColor(Color.GREEN, 180));
         arcos.add(new ArcoColor(Color.YELLOW, 270));
-        ventana.setVisible(true);
+        vent.setVisible(true);
     }
 
     public class PanelSimon extends JPanel {
+
         public PanelSimon() {
         }
 
@@ -113,9 +113,9 @@ public class Vista {
 
             // Dibuja los arcos de colores
             for (ArcoColor arco : arcos) {
-                if (arco == arcoPressed) {
+                if (arco == arcoPresionado) {
                     g2d.setColor(Color.BLACK);
-                } else if (arco == arcoHovered) {
+                } else if (arco == arcoPosado) {
                     g2d.setColor(arco.getColor().darker());
                 } else {
                     g2d.setColor(arco.getColorActual());
@@ -146,6 +146,7 @@ public class Vista {
     }
 
     public class ArcoColor {
+
         private Color color;
         private int anguloInicio;
         private boolean estaIluminado;
@@ -180,16 +181,16 @@ public class Vista {
         }
 
         public boolean contiene(int x, int y) {
-            return getForma(ventana.getWidth() / 2, ventana.getHeight() / 2, 200).contains(x, y);
+            return getForma(vent.getWidth() / 2, vent.getHeight() / 2, 200).contains(x, y);
         }
     }
 
-    public JFrame getVentana() {
-        return ventana;
+    public JFrame getVent() {
+        return vent;
     }
 
-    public void setVentana(JFrame ventana) {
-        this.ventana = ventana;
+    public void setVent(JFrame vent) {
+        this.vent = vent;
     }
 
     public PanelSimon getPanelSimon() {
@@ -208,20 +209,20 @@ public class Vista {
         this.etiquetaEstado = etiquetaEstado;
     }
 
-    public JLabel getEtiquetaNivel() {
-        return etiquetaNivel;
+    public JLabel getEtiquetaNivelActual() {
+        return etiquetaNivelActual;
     }
 
-    public void setEtiquetaNivel(JLabel etiquetaNivel) {
-        this.etiquetaNivel = etiquetaNivel;
+    public void setEtiquetaNivelActual(JLabel etiquetaNivelActual) {
+        this.etiquetaNivelActual = etiquetaNivelActual;
     }
 
-    public JLabel getEtiquetaTiempo() {
-        return etiquetaTiempo;
+    public JLabel getEtiquetaTiempoRestante() {
+        return etiquetaTiempoRestante;
     }
 
-    public void setEtiquetaTiempo(JLabel etiquetaTiempo) {
-        this.etiquetaTiempo = etiquetaTiempo;
+    public void setEtiquetaTiempoRestante(JLabel etiquetaTiempoRestante) {
+        this.etiquetaTiempoRestante = etiquetaTiempoRestante;
     }
 
     public JLabel getEtiquetaPuntuacion() {
@@ -232,12 +233,12 @@ public class Vista {
         this.etiquetaPuntuacion = etiquetaPuntuacion;
     }
 
-    public JPanel getPanelSuperior() {
-        return panelSuperior;
+    public JPanel getPanelArriba() {
+        return panelArriba;
     }
 
-    public void setPanelSuperior(JPanel panelSuperior) {
-        this.panelSuperior = panelSuperior;
+    public void setPanelArriba(JPanel panelArriba) {
+        this.panelArriba = panelArriba;
     }
 
     public ArrayList<ArcoColor> getArcos() {
@@ -255,6 +256,5 @@ public class Vista {
     public static void setMensaje(String mensaje) {
         Vista.mensaje = mensaje;
     }
-
 
 }

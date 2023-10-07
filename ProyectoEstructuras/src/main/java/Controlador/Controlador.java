@@ -19,7 +19,7 @@ public class Controlador {
 
     Modelo mod;
     Vista vis;
-    private Timer temporizadorTurno;
+    private Timer temporizadorDeTurno;
     private Timer temporizadorMensaje;
 
     public Controlador(Modelo m, Vista v) {
@@ -27,11 +27,11 @@ public class Controlador {
         vis = v;
 
         //Muestra en pantalla el tiempo restante que le queda al jugador para reproducir la secuencia
-        temporizadorTurno = new Timer(1000, new ActionListener() {
+        temporizadorDeTurno = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mod.setTiempoRestante(mod.getTiempoRestante() - 1);
-                vis.getEtiquetaTiempo().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
+                vis.getEtiquetaTiempoRestante().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
                 if (mod.getTiempoRestante() <= 0) {
                     mostrarPantallaFinal();
                 }
@@ -53,7 +53,7 @@ public class Controlador {
             //Presionar los botones de colores y verificar su secuencia
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!mod.isJugandoSecuencia()) {
+                if (!mod.isJugando()) {
                     for (Vista.ArcoColor arco : vis.getArcos()) {
                         if (arco.contiene(e.getX(), e.getY())) {
                             verificarSecuencia(arco);
@@ -67,11 +67,11 @@ public class Controlador {
             //Reproduce el sonido correspondiente a cada botón de la aplicación
             @Override
             public void mousePressed(MouseEvent e) {
-                if (!mod.isJugandoSecuencia()) {
+                if (!mod.isJugando()) {
                     for (Vista.ArcoColor arco : vis.getArcos()) {
                         if (arco.contiene(e.getX(), e.getY())) {
 
-                            vis.setArcoPressed(arco);
+                            vis.setArcoPresionado(arco);
                             if (arco.getColor().equals(Color.RED)) {
                                 mod.reproducirSonido("1.wav");
                             } else if (arco.getColor().equals(Color.BLUE)) {
@@ -90,9 +90,9 @@ public class Controlador {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (vis.getArcoPressed() != null) {
-                    vis.setArcoPressed(null);
-                    vis.setArcoHovered(null);
+                if (vis.getArcoPresionado() != null) {
+                    vis.setArcoPresionado(null);
+                    vis.setArcoPosado(null);
                     vis.getPanelSimon().repaint();
                 }
             }
@@ -105,11 +105,11 @@ public class Controlador {
             //Oscurece el color donde el mouse esta posicionado
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (!mod.isJugandoSecuencia()) {
-                    vis.setArcoHovered(null);
+                if (!mod.isJugando()) {
+                    vis.setArcoPosado(null);
                     for (Vista.ArcoColor arco : vis.getArcos()) {
                         if (arco.contiene(e.getX(), e.getY())) {
-                            vis.setArcoHovered(arco);
+                            vis.setArcoPosado(arco);
                             break;
                         }
                     }
@@ -128,12 +128,12 @@ public class Controlador {
 
     //Método para verificar que la secuencia que reproduce el jugador coincida con la secuencia generada previamente
     public void verificarSecuencia(Vista.ArcoColor arco) {
-        if (!mod.isJugandoSecuencia()) {
+        if (!mod.isJugando()) {
             if (arco.getColor() == vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor()) {
                 mod.setPasoActual(mod.getPasoActual() + 1);
                 if (mod.getPasoActual() == mod.getSecuencia().size()) {
-                    temporizadorTurno.stop();
-                    vis.getEtiquetaTiempo().setText("TIEMPO: 0");
+                    temporizadorDeTurno.stop();
+                    vis.getEtiquetaTiempoRestante().setText("TIEMPO: 0");
                     agregarPasoASecuencia();
                     mod.reproducirSonido("yes.wav"); // Llamar cuando la secuencia es correcta
                 }
@@ -153,17 +153,17 @@ public class Controlador {
 
     //Muestra la pantalla cuando el jugador pierde e implementa listeners para los botones de volver a jugar o salir
     public void mostrarPantallaFinal() {
-        temporizadorTurno.stop();
+        temporizadorDeTurno.stop();
         mod.reproducirSonido("gameOver.wav"); // Terminó el juego
-        vis.getVentana().remove(vis.getPanelSimon());
-        vis.getVentana().remove(vis.getEtiquetaEstado());
-        vis.getVentana().remove(vis.getPanelSuperior());
+        vis.getVent().remove(vis.getPanelSimon());
+        vis.getVent().remove(vis.getEtiquetaEstado());
+        vis.getVent().remove(vis.getPanelArriba());
 
         JPanel panelFinal = new JPanel(new BorderLayout());
         JLabel etiquetaFinal = new JLabel("Quedaste en el nivel: " + mod.getNivel(), SwingConstants.CENTER);
         panelFinal.add(etiquetaFinal, BorderLayout.CENTER);
 
-        JLabel etiquetaPuntosFinal = new JLabel("Puntuación final: " + mod.getPuntuacion(), SwingConstants.CENTER);
+        JLabel etiquetaPuntosFinal = new JLabel("Puntuación final: " + mod.getPuntos(), SwingConstants.CENTER);
         panelFinal.add(etiquetaPuntosFinal, BorderLayout.NORTH);
 
         JPanel panelBotones = new JPanel();
@@ -174,17 +174,17 @@ public class Controlador {
         btnReintentar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                vis.getVentana().remove(panelFinal);
+                vis.getVent().remove(panelFinal);
 
-                vis.getVentana().add(vis.getPanelSimon(), BorderLayout.CENTER);
-                vis.getVentana().add(vis.getEtiquetaEstado(), BorderLayout.SOUTH);
-                vis.getVentana().add(vis.getPanelSuperior(), BorderLayout.NORTH);
+                vis.getVent().add(vis.getPanelSimon(), BorderLayout.CENTER);
+                vis.getVent().add(vis.getEtiquetaEstado(), BorderLayout.SOUTH);
+                vis.getVent().add(vis.getPanelArriba(), BorderLayout.NORTH);
                 mod.setNivel(0);
-                mod.setPuntuacion(0);
-                mod.setMultiplicadorPuntos(1);
+                mod.setPuntos(0);
+                mod.setMultiplicadorDePuntos(1);
                 iniciarJuego();
-                vis.getVentana().revalidate();
-                vis.getVentana().repaint();
+                vis.getVent().revalidate();
+                vis.getVent().repaint();
             }
         });
 
@@ -199,9 +199,9 @@ public class Controlador {
         panelBotones.add(btnReintentar);
         panelBotones.add(btnSalir);
         panelFinal.add(panelBotones, BorderLayout.SOUTH);
-        vis.getVentana().add(panelFinal);
-        vis.getVentana().revalidate();
-        vis.getVentana().repaint();
+        vis.getVent().add(panelFinal);
+        vis.getVent().revalidate();
+        vis.getVent().repaint();
     }
 
     //Metodo para agregar un color a la secuencia si se avanza de nivel
@@ -211,9 +211,9 @@ public class Controlador {
 
         mod.setPasoActual(0);
         mod.setNivel(mod.getNivel() + 1);
-        vis.getEtiquetaNivel().setText("Nivel " + mod.getNivel());
-        mod.setPuntuacion(mod.getPuntuacion() + (10 * mod.getMultiplicadorPuntos()));
-        vis.getEtiquetaPuntuacion().setText("Puntuación: " + mod.getPuntuacion());
+        vis.getEtiquetaNivelActual().setText("Nivel " + mod.getNivel());
+        mod.setPuntos(mod.getPuntos() + (10 * mod.getMultiplicadorDePuntos()));
+        vis.getEtiquetaPuntuacion().setText("Puntuación: " + mod.getPuntos());
         if (mod.getNivel() % 4 == 0) {
             if (mod.getTiempoRestante() > 3) {
                 int aux = mod.getTiempoRestante();
@@ -226,14 +226,14 @@ public class Controlador {
 
 
             }
-            if (mod.getVelocidadSecuencia() > 500) {
-                mod.setVelocidadSecuencia(mod.getVelocidadSecuencia() - 100);
+            if (mod.getVelocidadDeSecuencia() > 500) {
+                mod.setVelocidadDeSecuencia(mod.getVelocidadDeSecuencia() - 100);
 
                 //Se aumenta la velocidad al mostrar la secuencia al jugador
                 mostrarMensaje("MÁS RÁPIDO!!!");
                 vis.getPanelSimon().repaint();
                 //reproducirSonido("moreSpeed");
-                mod.setMultiplicadorPuntos(mod.getMultiplicadorPuntos() * 10);
+                mod.setMultiplicadorDePuntos(mod.getMultiplicadorDePuntos() * 10);
             }
         }
         jugarSecuencia();
@@ -246,18 +246,18 @@ public class Controlador {
         if (mod.getTiempoRestante() < 3) {
             mod.setTiempoRestante(3);
         }
-        temporizadorTurno.stop();
-        vis.getEtiquetaTiempo().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
-        temporizadorTurno.start();
+        temporizadorDeTurno.stop();
+        vis.getEtiquetaTiempoRestante().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
+        temporizadorDeTurno.start();
     }
 
     //Método para mostrar la secuencia al jugador
     public void jugarSecuencia() {
-        mod.setJugandoSecuencia(true);
+        mod.setJugando(true);
         vis.getEtiquetaEstado().setText("Mira la secuencia");
         for (int i = 0; i < mod.getSecuencia().size(); i++) {
             int indiceFinal = i;
-            Timer temporizador = new Timer(mod.getVelocidadSecuencia() * (i + 1), new ActionListener() {
+            Timer temporizador = new Timer(mod.getVelocidadDeSecuencia() * (i + 1), new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     vis.getArcos().get(mod.getSecuencia().get(indiceFinal)).iluminar();
@@ -271,14 +271,14 @@ public class Controlador {
                         mod.reproducirSonido("4.wav");
                     }
                     vis.getPanelSimon().repaint();
-                    Timer temporizadorRetornoColor = new Timer(mod.getVelocidadSecuencia() / 2, new ActionListener() {
+                    Timer temporizadorRetornoColor = new Timer(mod.getVelocidadDeSecuencia() / 2, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             vis.getArcos().get(mod.getSecuencia().get(indiceFinal)).detenerIluminacion();
                             vis.getPanelSimon().repaint();
                             if (indiceFinal == mod.getSecuencia().size() - 1) {
                                 vis.getEtiquetaEstado().setText("Es tu turno");
-                                mod.setJugandoSecuencia(false);
+                                mod.setJugando(false);
                                 reiniciarCronometro();
                             }
                         }
