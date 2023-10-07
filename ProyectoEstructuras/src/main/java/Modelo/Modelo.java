@@ -11,14 +11,20 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
 /**
  *
  * @author Dell
  */
-
-
 public class Modelo {
+
     private ArrayList<Integer> secuencia;
     private int pasoActual;
     private int nivel;
@@ -37,9 +43,9 @@ public class Modelo {
         nivel = 0;
         jugandoSecuencia = false;
 
+        cargarDatos();
     }
 
-    
     public void reproducirSonido(String nombreArchivo) {
         try {
             File archivoSonido = new File(nombreArchivo);
@@ -55,7 +61,7 @@ public class Modelo {
             e.printStackTrace();
         }
     }
-    
+
     public ArrayList<Integer> getSecuencia() {
         return secuencia;
     }
@@ -88,7 +94,6 @@ public class Modelo {
         this.jugandoSecuencia = jugandoSecuencia;
     }
 
-
     public int getTiempoRestante() {
         return tiempoRestante;
     }
@@ -120,5 +125,26 @@ public class Modelo {
     public void setMultiplicadorPuntos(int multiplicadorPuntos) {
         this.multiplicadorPuntos = multiplicadorPuntos;
     }
-    
+
+    public void cargarDatos() {
+        String rutaArchivo = "src/main/java/Modelo/CargadoDeArchivos.xml"; // Ruta del archivo XML
+        try {
+            SAXBuilder saxBuilder = new SAXBuilder();
+            File archivoXML = new File(rutaArchivo);
+            Document document = saxBuilder.build(archivoXML);
+
+            Element datosElement = document.getRootElement();
+
+            String tempo = datosElement.getChildText("Tempo");
+            String velocidadDeSecuencia = datosElement.getChildText("VelocidadDeSecuencia");
+            String MultiplicadorDePuntos = datosElement.getChildText("MultiplicadorDePuntos");
+            tiempoRestante = Integer.valueOf(tempo);
+            velocidadSecuencia = Integer.valueOf(velocidadDeSecuencia);
+            multiplicadorPuntos = Integer.valueOf(MultiplicadorDePuntos);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

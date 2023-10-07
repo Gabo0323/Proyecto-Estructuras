@@ -11,4 +11,11 @@
         <maven.compiler.target>19</maven.compiler.target>
         <exec.mainClass>com.mycompany.proyectoestructuras.ProyectoEstructuras</exec.mainClass>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom2</artifactId>
+            <version>2.0.6.1</version> 
+        </dependency>
+    </dependencies>
 </project>

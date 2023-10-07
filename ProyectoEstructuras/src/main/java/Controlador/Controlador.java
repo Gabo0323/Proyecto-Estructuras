@@ -240,7 +240,7 @@ public class Controlador {
     }
 
     public void reiniciarCronometro() {
-        mod.setTiempoRestante(15 - (mod.getNivel() / (4 * 2)));//cuidado, puede fallar
+        mod.setTiempoRestante(mod.getTiempoRestante() - (mod.getNivel() / (4 * 2)));//cuidado, puede fallar
         if (mod.getTiempoRestante() < 3) {
             mod.setTiempoRestante(3);
         }
