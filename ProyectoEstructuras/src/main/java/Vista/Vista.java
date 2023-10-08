@@ -26,12 +26,12 @@ import javax.swing.SwingConstants;
 public class Vista {
 
     private JFrame vent;
-    private PanelSimon panelSimon;
-    private JLabel etiquetaEstado;
-    private JLabel etiquetaNivelActual;
-    private JLabel etiquetaTiempoRestante;
-    private JLabel etiquetaPuntuacion;
-    private JPanel panelArriba;
+    private PanelBotones panelSimon;
+    private JLabel labelEstado;
+    private JLabel labelNivelActual;
+    private JLabel labelTiempoRestante;
+    private JLabel labelPuntuacion;
+    private JPanel upPanel;
     private ArrayList<Arco> arcos;
     private static Vista.Arco arcoPosado = null;
     private static Vista.Arco arcoPresionado = null;
@@ -61,26 +61,26 @@ public class Vista {
         vent.setLayout(new BorderLayout());
         vent.setLocationRelativeTo(null);
 
-        panelSimon = new PanelSimon();
+        panelSimon = new PanelBotones();
         vent.add(panelSimon, BorderLayout.CENTER);
 
-        etiquetaEstado = new JLabel("Mira la secuencia", SwingConstants.CENTER);
-        vent.add(etiquetaEstado, BorderLayout.SOUTH);
+        labelEstado = new JLabel("Mira la secuencia", SwingConstants.CENTER);
+        vent.add(labelEstado, BorderLayout.SOUTH);
 
-        panelArriba = new JPanel(new GridLayout(3, 1));
-        etiquetaNivelActual = new JLabel("Nivel 1", SwingConstants.CENTER);
-        etiquetaNivelActual.setFont(new Font("Arial", Font.BOLD, 24));
-        panelArriba.add(etiquetaNivelActual);
+        upPanel = new JPanel(new GridLayout(3, 1));
+        labelNivelActual = new JLabel("Nivel 1", SwingConstants.CENTER);
+        labelNivelActual.setFont(new Font("Arial", Font.BOLD, 24));
+        upPanel.add(labelNivelActual);
 
-        etiquetaTiempoRestante = new JLabel("TIEMPO: 0", SwingConstants.CENTER);
-        etiquetaTiempoRestante.setFont(new Font("Arial", Font.PLAIN, 20));
-        panelArriba.add(etiquetaTiempoRestante);
+        labelTiempoRestante = new JLabel("TIEMPO: 0", SwingConstants.CENTER);
+        labelTiempoRestante.setFont(new Font("Arial", Font.PLAIN, 20));
+        upPanel.add(labelTiempoRestante);
 
-        etiquetaPuntuacion = new JLabel("Puntuación: 0", SwingConstants.CENTER);
-        etiquetaPuntuacion.setFont(new Font("Arial", Font.PLAIN, 20));
-        panelArriba.add(etiquetaPuntuacion);
+        labelPuntuacion = new JLabel("Puntuación: 0", SwingConstants.CENTER);
+        labelPuntuacion.setFont(new Font("Arial", Font.PLAIN, 20));
+        upPanel.add(labelPuntuacion);
 
-        vent.add(panelArriba, BorderLayout.NORTH);
+        vent.add(upPanel, BorderLayout.NORTH);
 
         arcos = new ArrayList<>();
 
@@ -91,9 +91,9 @@ public class Vista {
         vent.setVisible(true);
     }
 
-    public class PanelSimon extends JPanel {
+    public class PanelBotones extends JPanel {
 
-        public PanelSimon() {
+        public PanelBotones() {
         }
 
         @Override
@@ -127,11 +127,11 @@ public class Vista {
             }
 
             // Dibuja el círculo gris en el centro
-            int radioCentro = 50; // Puedes ajustar este valor según prefieras
+            int radioCentral = 50; // Puedes ajustar este valor según prefieras
             g2d.setColor(Color.GRAY);
-            g2d.fillOval(centroX - radioCentro, centroY - radioCentro, 2 * radioCentro, 2 * radioCentro);
+            g2d.fillOval(centroX - radioCentral, centroY - radioCentral, 2 * radioCentral, 2 * radioCentral);
             g2d.setColor(Color.BLACK);
-            g2d.drawOval(centroX - radioCentro, centroY - radioCentro, 2 * radioCentro, 2 * radioCentro);
+            g2d.drawOval(centroX - radioCentral, centroY - radioCentral, 2 * radioCentral, 2 * radioCentral);
 
             // Dibuja el mensaje en el centro si está presente
             if (mensaje != null) {
@@ -193,52 +193,52 @@ public class Vista {
         this.vent = vent;
     }
 
-    public PanelSimon getPanelSimon() {
+    public PanelBotones getPanelSimon() {
         return panelSimon;
     }
 
-    public void setPanelSimon(PanelSimon panelSimon) {
+    public void setPanelSimon(PanelBotones panelSimon) {
         this.panelSimon = panelSimon;
     }
 
-    public JLabel getEtiquetaEstado() {
-        return etiquetaEstado;
+    public JLabel getLabelEstado() {
+        return labelEstado;
     }
 
-    public void setEtiquetaEstado(JLabel etiquetaEstado) {
-        this.etiquetaEstado = etiquetaEstado;
+    public void setLabelEstado(JLabel labelEstado) {
+        this.labelEstado = labelEstado;
     }
 
-    public JLabel getEtiquetaNivelActual() {
-        return etiquetaNivelActual;
+    public JLabel getLabelNivelActual() {
+        return labelNivelActual;
     }
 
-    public void setEtiquetaNivelActual(JLabel etiquetaNivelActual) {
-        this.etiquetaNivelActual = etiquetaNivelActual;
+    public void setLabelNivelActual(JLabel labelNivelActual) {
+        this.labelNivelActual = labelNivelActual;
     }
 
-    public JLabel getEtiquetaTiempoRestante() {
-        return etiquetaTiempoRestante;
+    public JLabel getLabelTiempoRestante() {
+        return labelTiempoRestante;
     }
 
-    public void setEtiquetaTiempoRestante(JLabel etiquetaTiempoRestante) {
-        this.etiquetaTiempoRestante = etiquetaTiempoRestante;
+    public void setLabelTiempoRestante(JLabel labelTiempoRestante) {
+        this.labelTiempoRestante = labelTiempoRestante;
     }
 
-    public JLabel getEtiquetaPuntuacion() {
-        return etiquetaPuntuacion;
+    public JLabel getLabelPuntuacion() {
+        return labelPuntuacion;
     }
 
-    public void setEtiquetaPuntuacion(JLabel etiquetaPuntuacion) {
-        this.etiquetaPuntuacion = etiquetaPuntuacion;
+    public void setLabelPuntuacion(JLabel labelPuntuacion) {
+        this.labelPuntuacion = labelPuntuacion;
     }
 
-    public JPanel getPanelArriba() {
-        return panelArriba;
+    public JPanel getUpPanel() {
+        return upPanel;
     }
 
-    public void setPanelArriba(JPanel panelArriba) {
-        this.panelArriba = panelArriba;
+    public void setUpPanel(JPanel upPanel) {
+        this.upPanel = upPanel;
     }
 
     public ArrayList<Arco> getArcos() {

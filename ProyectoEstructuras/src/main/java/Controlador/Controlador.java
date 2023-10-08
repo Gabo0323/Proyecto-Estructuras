@@ -31,7 +31,7 @@ public class Controlador {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mod.setTiempoRestante(mod.getTiempoRestante() - 1);
-                vis.getEtiquetaTiempoRestante().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
+                vis.getLabelTiempoRestante().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
                 if (mod.getTiempoRestante() <= 0) {
                     mostrarPantallaFinal();
                 }
@@ -48,7 +48,6 @@ public class Controlador {
 
         //Implementación de los listeners
         vis.getPanelSimon().addMouseListener(new MouseAdapter() {
-            Vista arcoHovered = null;
 
             //Presionar los botones de colores y verificar su secuencia
             @Override
@@ -99,8 +98,6 @@ public class Controlador {
         });
 
         vis.getPanelSimon().addMouseMotionListener(new MouseMotionAdapter() {
-            Vista.Arco arcoPressed = null;
-            Vista.Arco arcoHovered = null;
 
             //Oscurece el color donde el mouse esta posicionado
             @Override
@@ -133,7 +130,7 @@ public class Controlador {
                 mod.setPasoActual(mod.getPasoActual() + 1);
                 if (mod.getPasoActual() == mod.getSecuencia().size()) {
                     temporizadorDeTurno.stop();
-                    vis.getEtiquetaTiempoRestante().setText("TIEMPO: 0");
+                    vis.getLabelTiempoRestante().setText("TIEMPO: 0");
                     agregarPasoASecuencia();
                     mod.reproducirSonido("yes.wav"); // Llamar cuando la secuencia es correcta
                 }
@@ -156,12 +153,12 @@ public class Controlador {
         temporizadorDeTurno.stop();
         mod.reproducirSonido("gameOver.wav"); // Terminó el juego
         vis.getVent().remove(vis.getPanelSimon());
-        vis.getVent().remove(vis.getEtiquetaEstado());
-        vis.getVent().remove(vis.getPanelArriba());
+        vis.getVent().remove(vis.getLabelEstado());
+        vis.getVent().remove(vis.getUpPanel());
 
         JPanel panelFinal = new JPanel(new BorderLayout());
-        JLabel etiquetaFinal = new JLabel("Quedaste en el nivel: " + mod.getNivel(), SwingConstants.CENTER);
-        panelFinal.add(etiquetaFinal, BorderLayout.CENTER);
+        JLabel labelFinal = new JLabel("Quedaste en el nivel: " + mod.getNivel(), SwingConstants.CENTER);
+        panelFinal.add(labelFinal, BorderLayout.CENTER);
 
         JLabel etiquetaPuntosFinal = new JLabel("Puntuación final: " + mod.getPuntos(), SwingConstants.CENTER);
         panelFinal.add(etiquetaPuntosFinal, BorderLayout.NORTH);
@@ -177,8 +174,8 @@ public class Controlador {
                 vis.getVent().remove(panelFinal);
 
                 vis.getVent().add(vis.getPanelSimon(), BorderLayout.CENTER);
-                vis.getVent().add(vis.getEtiquetaEstado(), BorderLayout.SOUTH);
-                vis.getVent().add(vis.getPanelArriba(), BorderLayout.NORTH);
+                vis.getVent().add(vis.getLabelEstado(), BorderLayout.SOUTH);
+                vis.getVent().add(vis.getUpPanel(), BorderLayout.NORTH);
                 mod.setNivel(0);
                 mod.setPuntos(0);
                 mod.setMultiplicadorDePuntos(1);
@@ -211,9 +208,9 @@ public class Controlador {
 
         mod.setPasoActual(0);
         mod.setNivel(mod.getNivel() + 1);
-        vis.getEtiquetaNivelActual().setText("Nivel " + mod.getNivel());
+        vis.getLabelNivelActual().setText("Nivel " + mod.getNivel());
         mod.setPuntos(mod.getPuntos() + (10 * mod.getMultiplicadorDePuntos()));
-        vis.getEtiquetaPuntuacion().setText("Puntuación: " + mod.getPuntos());
+        vis.getLabelPuntuacion().setText("Puntuación: " + mod.getPuntos());
         if (mod.getNivel() % 4 == 0) {
             if (mod.getTiempoRestante() > 3) {
                 int aux = mod.getTiempoRestante();
@@ -223,7 +220,6 @@ public class Controlador {
                 //Se reduce el tiempo que tiene el jugador para reproducir la secuencia
                 mostrarMensaje("TIEMPO REDUCIDO!!");
                 vis.getPanelSimon().repaint();
-
 
             }
             if (mod.getVelocidadDeSecuencia() > 500) {
@@ -247,14 +243,14 @@ public class Controlador {
             mod.setTiempoRestante(3);
         }
         temporizadorDeTurno.stop();
-        vis.getEtiquetaTiempoRestante().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
+        vis.getLabelTiempoRestante().setText("TIEMPO: " + (mod.getTiempoRestante() < 10 ? "0" : "") + mod.getTiempoRestante());
         temporizadorDeTurno.start();
     }
 
     //Método para mostrar la secuencia al jugador
     public void reproducirSecuencia() {
         mod.setJugando(true);
-        vis.getEtiquetaEstado().setText("Mira la secuencia");
+        vis.getLabelEstado().setText("Mira la secuencia");
         for (int i = 0; i < mod.getSecuencia().size(); i++) {
             int indiceFinal = i;
             Timer temporizador = new Timer(mod.getVelocidadDeSecuencia() * (i + 1), new ActionListener() {
@@ -277,7 +273,7 @@ public class Controlador {
                             vis.getArcos().get(mod.getSecuencia().get(indiceFinal)).detenerIluminacion();
                             vis.getPanelSimon().repaint();
                             if (indiceFinal == mod.getSecuencia().size() - 1) {
-                                vis.getEtiquetaEstado().setText("Es tu turno");
+                                vis.getLabelEstado().setText("Es tu turno");
                                 mod.setJugando(false);
                                 reiniciarCronometro();
                             }
