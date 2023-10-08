@@ -32,24 +32,24 @@ public class Vista {
     private JLabel etiquetaTiempoRestante;
     private JLabel etiquetaPuntuacion;
     private JPanel panelArriba;
-    private ArrayList<ArcoColor> arcos;
-    private static Vista.ArcoColor arcoPosado = null;
-    private static Vista.ArcoColor arcoPresionado = null;
+    private ArrayList<Arco> arcos;
+    private static Vista.Arco arcoPosado = null;
+    private static Vista.Arco arcoPresionado = null;
     private static String mensaje = null;
 
-    public static ArcoColor getArcoPosado() {
+    public static Arco getArcoPosado() {
         return arcoPosado;
     }
 
-    public static void setArcoPosado(ArcoColor arcoPosado) {
+    public static void setArcoPosado(Arco arcoPosado) {
         Vista.arcoPosado = arcoPosado;
     }
 
-    public static ArcoColor getArcoPresionado() {
+    public static Arco getArcoPresionado() {
         return arcoPresionado;
     }
 
-    public static void setArcoPresionado(ArcoColor arcoPresionado) {
+    public static void setArcoPresionado(Arco arcoPresionado) {
         Vista.arcoPresionado = arcoPresionado;
     }
 
@@ -84,10 +84,10 @@ public class Vista {
 
         arcos = new ArrayList<>();
 
-        arcos.add(new ArcoColor(Color.RED, 0));
-        arcos.add(new ArcoColor(Color.BLUE, 90));
-        arcos.add(new ArcoColor(Color.GREEN, 180));
-        arcos.add(new ArcoColor(Color.YELLOW, 270));
+        arcos.add(new Arco(Color.RED, 0));
+        arcos.add(new Arco(Color.BLUE, 90));
+        arcos.add(new Arco(Color.GREEN, 180));
+        arcos.add(new Arco(Color.YELLOW, 270));
         vent.setVisible(true);
     }
 
@@ -112,7 +112,7 @@ public class Vista {
             g2d.drawOval(centroX - radio, centroY - radio, 2 * radio, 2 * radio);
 
             // Dibuja los arcos de colores
-            for (ArcoColor arco : arcos) {
+            for (Arco arco : arcos) {
                 if (arco == arcoPresionado) {
                     g2d.setColor(Color.BLACK);
                 } else if (arco == arcoPosado) {
@@ -145,13 +145,13 @@ public class Vista {
         }
     }
 
-    public class ArcoColor {
+    public class Arco {
 
         private Color color;
         private int anguloInicio;
         private boolean estaIluminado;
 
-        public ArcoColor(Color color, int anguloInicio) {
+        public Arco(Color color, int anguloInicio) {
             this.color = color;
             this.anguloInicio = anguloInicio;
             this.estaIluminado = false;
@@ -241,11 +241,11 @@ public class Vista {
         this.panelArriba = panelArriba;
     }
 
-    public ArrayList<ArcoColor> getArcos() {
+    public ArrayList<Arco> getArcos() {
         return arcos;
     }
 
-    public void setArcos(ArrayList<ArcoColor> arcos) {
+    public void setArcos(ArrayList<Arco> arcos) {
         this.arcos = arcos;
     }
 

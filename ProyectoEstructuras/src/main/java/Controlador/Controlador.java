@@ -54,7 +54,7 @@ public class Controlador {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (!mod.isJugando()) {
-                    for (Vista.ArcoColor arco : vis.getArcos()) {
+                    for (Vista.Arco arco : vis.getArcos()) {
                         if (arco.contiene(e.getX(), e.getY())) {
                             verificarSecuencia(arco);
                             vis.getPanelSimon().repaint();
@@ -68,7 +68,7 @@ public class Controlador {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (!mod.isJugando()) {
-                    for (Vista.ArcoColor arco : vis.getArcos()) {
+                    for (Vista.Arco arco : vis.getArcos()) {
                         if (arco.contiene(e.getX(), e.getY())) {
 
                             vis.setArcoPresionado(arco);
@@ -99,15 +99,15 @@ public class Controlador {
         });
 
         vis.getPanelSimon().addMouseMotionListener(new MouseMotionAdapter() {
-            Vista.ArcoColor arcoPressed = null;
-            Vista.ArcoColor arcoHovered = null;
+            Vista.Arco arcoPressed = null;
+            Vista.Arco arcoHovered = null;
 
             //Oscurece el color donde el mouse esta posicionado
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (!mod.isJugando()) {
                     vis.setArcoPosado(null);
-                    for (Vista.ArcoColor arco : vis.getArcos()) {
+                    for (Vista.Arco arco : vis.getArcos()) {
                         if (arco.contiene(e.getX(), e.getY())) {
                             vis.setArcoPosado(arco);
                             break;
@@ -127,7 +127,7 @@ public class Controlador {
     }
 
     //Método para verificar que la secuencia que reproduce el jugador coincida con la secuencia generada previamente
-    public void verificarSecuencia(Vista.ArcoColor arco) {
+    public void verificarSecuencia(Vista.Arco arco) {
         if (!mod.isJugando()) {
             if (arco.getColor() == vis.getArcos().get(mod.getSecuencia().get(mod.getPasoActual())).getColor()) {
                 mod.setPasoActual(mod.getPasoActual() + 1);
@@ -236,7 +236,7 @@ public class Controlador {
                 mod.setMultiplicadorDePuntos(mod.getMultiplicadorDePuntos() * 10);
             }
         }
-        jugarSecuencia();
+        reproducirSecuencia();
     }
 
     public void reiniciarCronometro() {
@@ -252,7 +252,7 @@ public class Controlador {
     }
 
     //Método para mostrar la secuencia al jugador
-    public void jugarSecuencia() {
+    public void reproducirSecuencia() {
         mod.setJugando(true);
         vis.getEtiquetaEstado().setText("Mira la secuencia");
         for (int i = 0; i < mod.getSecuencia().size(); i++) {

@@ -12,6 +12,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -42,7 +43,7 @@ public class Modelo {
         cargarDatos();
     }
 
-//Método para reproducir sonidos
+    //Método para reproducir sonidos
     public void reproducirSonido(String nombreArchivo) {
         try {
             File archivoSonido = new File(nombreArchivo);
